@@ -9,7 +9,7 @@ type buttonType = {
 
 export default function Button({ children, className, type, onClick }:buttonType) {
     return (
-        <button type={type} onClick={onClick} className={`w-full bg-orange-500 text-white p-2 rounded-lg ${className}`}>
+        <button type={type} onClick={onClick} className={`bg-orange-700 hover:bg-orange-600 transition-all text-white p-2 rounded-lg ${className}`}>
             {children}
         </button>
     )
