@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Libre_Franklin } from "next/font/google";
+import { Unbounded } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 
-const dellaRespira = Libre_Franklin({
-  weight: '400',
-  subsets: ['latin'],
-});
+const unbounded = Unbounded({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Cents",
@@ -20,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={dellaRespira.className}>{children}</body>
+      <body className={unbounded.className}>{children}</body>
     </html>
   );
 }
