@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Label from './Label'
-import Button from './Button'
+import {Button, CancelButton} from './Button'
 import ClickOutside from '../ClickOutside'
 
 type modalPropType = {
@@ -37,7 +37,7 @@ export default function Modal({ children, Title, onClose, isOpen, buttonText }: 
                                 </div>
                                 <div className="flex justify-end gap-2 p-4 md:p-5 ">
                                     <Button type="submit" className='px-4'>{buttonText}</Button>
-                                    <button type="button" className='px-4 bg-gray-300 p-2 rounded-lg text-black' onClick={onClose}>Cancel</button>
+                                    <CancelButton type='button' onClick={onClose} className='px-4'>Cancel</CancelButton>
                                 </div>
                             </div>
                         </ClickOutside>

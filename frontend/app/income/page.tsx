@@ -6,7 +6,7 @@ import Modal from '@/components/ui/Modal';
 import Label from '@/components/ui/Label';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
-import Button from '@/components/ui/Button';
+import {Button} from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import MainLayout from '../MainLayout';
 
@@ -138,7 +138,7 @@ export default function Income() {
                             <div className='flex justify-between'>
                                 <div className='flex gap-3'>
                                     <Label className='font-medium text-lg'>{e.category}</Label>
-                                    <Label className='rounded-full bg-gray-100 px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
+                                    <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
                                 </div>
                                 <div className='flex gap-3'>
                                     <div>

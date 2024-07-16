@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Navigation from '@/components/Navigation'
 import Label from '@/components/ui/Label'
-import Button from '@/components/ui/Button'
+import {Button} from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
@@ -62,8 +62,9 @@ export default function Dashboard() {
                 <div>
                     <Label className='text-2xl font-bold'><span id='greeting'></span>, User</Label>
                 </div>
-
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+                <div>
+                <Label className='text-xl font-bold'>Overview</Label>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-2'>
                     <Card className='flex flex-col items-center gap-3'>
                         <p className='font-medium text-xl text-green-600'>$5000</p>
                         <div className='flex gap-2'>
@@ -120,8 +121,10 @@ export default function Dashboard() {
                         </div>
                     </Card>
                 </div>
-                <div className='flex flex-col gap-5'>
-                    <Label className='text-2xl font-semibold'>Summary</Label>
+                </div>
+                <div>
+                    <Label className='text-xl font-semibold'>Summary</Label>
+                    <div className='flex flex-col gap-5 mt-2'>
                     <Card>
                         <BarChart data={monthlyExpenseData} />
                     </Card>
@@ -131,6 +134,7 @@ export default function Dashboard() {
                     <Card>
                         <LineChart data={monthlyExpenseData} />
                     </Card>
+                    </div>
                 </div>
             </div>
         </MainLayout>
