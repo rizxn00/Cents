@@ -104,17 +104,16 @@ const Navigation: React.FC = () => {
                     </ul>
                 </div>
             </aside>
-            <div className="flex md:hidden">
+            <div className="flex md:hidden p-2 shadow-md bg-gray-50">
                 <input type="checkbox" id="drawer-toggle" className="relative sr-only hidden peer" />
-                <label htmlFor="drawer-toggle" className="absolute top-4 right-5 " >
-                    <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <label htmlFor="drawer-toggle" className="ml-2" >
+                    <svg className="w-8 h-8" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </label>
 
-                {/* <div className="fixed inset-0 bg-gray-400 bg-opacity-35 transition-opacity " aria-hidden="true"> */}
                     
-                    <div className="fixed top-0 right-0 z-50 w-64 h-full transition-all duration-500 transform translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
+                    <div className="fixed top-0 left-0 z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
                         <ClickOutside onClick={disableDrawer}>
                             <div className="px-2 py-4 flex flex-col justify-between">
                                 <button onClick={disableDrawer} className='absolute top-4 right-4'>
@@ -181,7 +180,6 @@ const Navigation: React.FC = () => {
                     </div>
                 </div>
             </div>
-        // </div>
 
     )
 }

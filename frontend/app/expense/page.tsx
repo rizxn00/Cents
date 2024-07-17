@@ -138,7 +138,7 @@ export default function Report() {
                             </svg>
                             Expense</Button>
                     </div>
-                    <Label className='text-5xl font-semibold'>$ 50000</Label>
+                    <Label className='text-5xl font-semibold text-red-600'>$ 50000</Label>
                     <div>
                         <Label className='text-xl font-medium'>Expenses</Label>
                         {Expenses.map((e) => (

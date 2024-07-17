@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import Label from "@/components/ui/Label";
 import Image from "next/image";
 import shape from '@/assets/svgs/shape.svg'
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -66,11 +67,10 @@ export default function Home() {
       </svg>)
     },
     {
-      'label': 'Categories',
+      'label': 'Export/Import',
       'image':( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" color="#ffffff" fill="none">
-        <path d="M4 14H8.42109C9.35119 14 9.81624 14 9.94012 14.2801C10.064 14.5603 9.74755 14.8963 9.11466 15.5684L5.47691 19.4316C4.84402 20.1037 4.52757 20.4397 4.65145 20.7199C4.77533 21 5.24038 21 6.17048 21H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M4 9L6.10557 4.30527C6.49585 3.43509 6.69098 3 7 3C7.30902 3 7.50415 3.43509 7.89443 4.30527L10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M17.5 20V4M17.5 20C16.7998 20 15.4915 18.0057 15 17.5M17.5 20C18.2002 20 19.5085 18.0057 20 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M20 15.0057V10.6606C20 9.84276 20 9.43383 19.8478 9.06613C19.6955 8.69843 19.4065 8.40927 18.8284 7.83096L14.0919 3.09236C13.593 2.59325 13.3436 2.3437 13.0345 2.19583C12.9702 2.16508 12.9044 2.13778 12.8372 2.11406C12.5141 2 12.1614 2 11.4558 2C8.21082 2 6.58831 2 5.48933 2.88646C5.26731 3.06554 5.06508 3.26787 4.88607 3.48998C4 4.58943 4 6.21265 4 9.45908V14.0052C4 17.7781 4 19.6645 5.17157 20.8366C6.11466 21.7801 7.52043 21.9641 10 22M13 2.50022V3.00043C13 5.83009 13 7.24492 13.8787 8.12398C14.7574 9.00304 16.1716 9.00304 19 9.00304H19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 22C14.3932 21.4102 12 19.8403 12 19C12 18.1597 14.3932 16.5898 15 16M13 19H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>)
     },
   ]
@@ -101,23 +101,27 @@ export default function Home() {
               <Label className='text-sm'>About</Label>
               <Label className='text-sm'>Features</Label>
               <Label className='text-sm'>Contact</Label>
-              <Button type="button" className='text-sm'>Sign Up</Button>
+              <Link href={'auth/signin'}>
+              <Button type="button" className='text-sm'>Login</Button>
+              </Link>
             </div>
           </div>
         </div>
       </nav>
       <main>
         <div className="bg-white h-[100dvh] flex justify-center items-center">
-          <div className="flex flex-col md:flex-row md:space-x-10 space-y-10 p-20">
+          <div className="flex flex-col md:flex-row md:space-x-10 space-y-10 p-10 md:p-20">
             <div className='space-y-5'>
               <div className='flex flex-col gap-2'>
                 <Label className="text-6xl font-extrabold">Cents.</Label><br />
                 <Label className="text-6xl">The Expense Tracker</Label><br />
-                <Label className="text-sm">your personal expense tracker designed to help you manage your finances effortlessly and efficiently.</Label>
+                <Label className="text-sm">Your personal expense tracker designed to help you manage your finances effortlessly and efficiently.</Label>
               </div>
               <div className='flex flex-col md:flex-row gap-2'>
-                <button type="button" className="bg-black text-white px-10 p-2 rounded">Explore</button>
-                <Button type="button">Sign Up</Button>
+                <button type="button" className="bg-black hover:bg-gray-950 text-white px-20 p-2 rounded">Explore</button>
+                <Link href={'auth/signup'}>
+                <Button type="button" className='w-full px-5'>Sign Up</Button>
+                </Link>
               </div>
             </div>
             <div>
@@ -127,7 +131,7 @@ export default function Home() {
         </div>
         <div className='bg-black p-10 grid grid-cols-2 md:grid-cols-4 justify-center gap-10'>
           {features.map((item:any) => (
-            <div className='flex flex-col gap-2 items-center' key={item.label}>
+            <div className='flex flex-col gap-2 items-center animate-pulse' key={item.label}>
               {item.image}
               <Label className='text-md font-medium text-white'>{item.label}</Label>
             </div>

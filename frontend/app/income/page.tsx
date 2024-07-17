@@ -130,7 +130,7 @@ export default function Income() {
                         </svg>
                         Income</Button>
                 </div>
-                <Label className='text-5xl font-semibold'>$ 50000</Label>
+                <Label className='text-5xl font-semibold text-green-600'>$ 50000</Label>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
                     {Income.map((e) => (

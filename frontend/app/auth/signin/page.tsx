@@ -15,11 +15,11 @@ export default function SignIn() {
                     <Label className='text-5xl font-extrabold text-center'>Cents</Label>
                     <form className='flex flex-col w-96 gap-4 mt-5'>
                         <div className='flex flex-col gap-1'>
-                            <Label className='font-medium'>Username</Label>
+                            <Label>Username</Label>
                             <Input type="text" />
                         </div>
                         <div className='flex flex-col gap-1'>
-                            <Label className='font-medium'>Password</Label>
+                            <Label>Password</Label>
                             <Input type="password" />
                         </div>
                         <div className='mt-5'>
