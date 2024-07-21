@@ -1,15 +1,14 @@
-import Navigation from '@/components/Navigation'
 import Card from '@/components/ui/Card'
 import Label from '@/components/ui/Label'
 import Image from 'next/image'
 import React from 'react'
-import MainLayout from '../MainLayout'
 import image from '@/assets/images/background_image.png'
 import avatar from '@/assets/svgs/login_illustrartion.svg'
+import HomeLayout from '../home'
 
 export default function Profile() {
     return (
-        <MainLayout>
+        <HomeLayout>
             <Card className='flex flex-col gap-5 md:gap-10'>
                 <div>
                     <Image src={image} alt='cover' className='bg-cover w-full h-20 rounded'></Image>
@@ -30,6 +29,6 @@ export default function Profile() {
                     <Label className='font-medium text-sm'>9999999999</Label>
                 </div>
             </Card>
-        </MainLayout>
+        </HomeLayout>
     )
 }

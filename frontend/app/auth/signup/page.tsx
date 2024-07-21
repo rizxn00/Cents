@@ -11,8 +11,8 @@ export default function SignUp() {
     return (
         <div className='min-h-screen h-full flex justify-center items-center'>
             <Image src={BackgroundImage} alt='background-image' className='absolute h-screen w-full -z-10' />
-            <Image src={Register_Illustration} alt='login-image' className='h-[400px]' />
-            <div className='flex flex-col bg-white px-20 pt-16 pb-10 gap-5 shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl'>
+            <Image src={Register_Illustration} alt='login-image' className='h-[400px] hidden md:block' />
+            <div className='flex flex-col bg-white dark:bg-zinc-950 px-6 sm:px-16 transition-all pt-16 pb-10 gap-5 shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl'>
                 <Label className='text-5xl font-extrabold text-center'>Cents</Label>
                 <form className='flex flex-col w-96 gap-4 mt-5'>
                     <div className='flex flex-col gap-1'>

@@ -8,7 +8,7 @@ type labelType = {
 
 export default function Label({ htmlFor, children, className }: labelType) {
     return (
-        <label htmlFor={htmlFor} className={`${className}`}>
+        <label htmlFor={htmlFor} className={`${className} text-black dark:text-white`}>
             {children}
         </label>
     )

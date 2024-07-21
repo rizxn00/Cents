@@ -11,6 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface BarChartProps {
@@ -27,13 +28,13 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       {
         data: data.values,
         backgroundColor: '#F97316',
-        borderRadius:5
+        borderRadius: 3
       },
     ],
   };
 
   const options = {
-    responsive: true,
+    aspectRatio: 1,
     plugins: {
       legend: {
         position: 'top' as const,

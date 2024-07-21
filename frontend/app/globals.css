@@ -36,3 +36,8 @@ body {
     text-wrap: balance;
   }
 }
+
+.customFont{
+  font-family: 'Courier New', Courier, monospace;
+}
+

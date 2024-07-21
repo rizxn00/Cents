@@ -26,7 +26,6 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     labels: data.labels,
     datasets: [
       {
-        label: 'Monthly Expenses',
         data: data.values,
         borderColor: '#AE5630',
         backgroundColor: '#AE5630',
@@ -37,13 +36,14 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 
   const options = {
     responsive: true,
+    aspectRatio: 1,        
     plugins: {
-      legend: {
-        position: 'top' as const,
-      },
       title: {
         display: true,
         text: 'Monthly Expenses',
+      },
+      legend: {
+        display:false,
       },
     },
     scales: {

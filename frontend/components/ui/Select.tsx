@@ -48,7 +48,7 @@ export default function Select({ options }: selectPropType) {
                     type="button" 
                     onClick={handleButtonClick}
                     onKeyDown={handleKeyDown}
-                    className="relative w-full cursor-default rounded-md bg-white focus:ring-1 focus:ring-orange-400 focus:ring-inset py-3 pl-3 text-left border"
+                    className="relative w-full cursor-default rounded-md focus:ring-1 focus:ring-orange-400 focus:ring-inset py-3.5 pl-3 text-left text-sm font-light border"
                 >
                     <span className="block truncate">
                         {searchTerm || selectedOption || "Choose a category"}
@@ -60,15 +60,15 @@ export default function Select({ options }: selectPropType) {
                     </span>
                 </button>
                 {showOptions &&
-                <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white dark:bg-zinc-950 dark:border py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {filteredOptions.map((option: string) => (
                     <li 
-                        className="relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-gray-100"
+                        className="relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-gray-100 dark:hover:bg-black"
                         key={option}
                         onClick={() => handleOptionClick(option)}
                     >
                         <div className="flex items-center">
-                            <span className="block truncate font-normal">{option}</span>
+                            <span className="block truncate font-light text-sm">{option}</span>
                         </div>
                     </li>
                     ))}
