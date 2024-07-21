@@ -134,7 +134,7 @@ export default function Report() {
                         </svg>
                         Expense</Button>
                 </div>
-                <Label className='text-5xl font-semibold text-red-600 dark:text-red-600'>$ 50000</Label>
+                <Label className='text-5xl font-semibold'>$ 50000</Label>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
                     {Expenses.map((e) => (
@@ -178,7 +178,7 @@ export default function Report() {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <Label>Category</Label>
-                                <Select options={expenses} />
+                                <Select options={expenses} placeholder='Choose a category' />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <Label>Expense</Label>

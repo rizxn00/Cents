@@ -72,7 +72,7 @@ const DonutChart: React.FC<DonutChartProps> = ({}) => {
     },
   };
 
-  return <Doughnut data={chartData} options={options} />;
+  return <Doughnut className='customFont' data={chartData} options={options} />;
 };
 
 export default DonutChart;

@@ -3,9 +3,10 @@ import ClickOutside from '../ClickOutside';
 
 type selectPropType = {
     options: string[]
+    placeholder?: string
 }
 
-export default function Select({ options }: selectPropType) {
+export default function Select({ options, placeholder }: selectPropType) {
     const [showOptions, setShowOptions] = useState<boolean>(false)
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -48,10 +49,10 @@ export default function Select({ options }: selectPropType) {
                     type="button" 
                     onClick={handleButtonClick}
                     onKeyDown={handleKeyDown}
-                    className="relative w-full cursor-default rounded-md focus:ring-1 focus:ring-orange-400 focus:ring-inset py-3.5 pl-3 text-left text-sm font-light border"
+                    className="relative w-full cursor-default rounded-md focus:ring-1 focus:ring-orange-400 focus:ring-inset py-3.5 pl-3 text-left text-sm font-light border bg-gray-100 dark:bg-zinc-900"
                 >
                     <span className="block truncate">
-                        {searchTerm || selectedOption || "Choose a category"}
+                        {searchTerm || selectedOption || placeholder}
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

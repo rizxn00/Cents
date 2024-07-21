@@ -117,13 +117,13 @@ export default function Dashboard() {
                 <div>
                     <Label className='text-xl font-semibold'>Summary</Label>
                     <div className='grid grid-cols-1 md:grid col-span-2 lg:grid-cols-3 gap-5 w-full mt-2'>
-                    <Card className='h-fit customFont'>
+                    <Card className='h-fit'>
                         <BarChart data={monthlyExpenseData}/>
                     </Card>
-                    <Card className='h-fit customFont'>
+                    <Card className='h-fit'>
                         <DonutChart />
                     </Card>
-                    <Card className='h-fit customFont'>
+                    <Card className='h-fit'>
                         <LineChart data={monthlyExpenseData} />
                     </Card>
                     </div>

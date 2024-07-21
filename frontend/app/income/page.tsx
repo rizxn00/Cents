@@ -172,7 +172,7 @@ export default function Income() {
                         </div>
                         <div className='flex flex-col gap-1'>
                             <Label>Catergory</Label>
-                            <Select options={income} />
+                            <Select options={income} placeholder='Choose a category' />
                         </div>
                         <div className='flex flex-col gap-1'>
                             <Label>Income</Label>
