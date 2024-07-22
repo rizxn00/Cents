@@ -81,29 +81,29 @@ export default function Home() {
 
   const details = [
     {
-      id:'1',
-      heading:'Manage Your Finances Seamlessly',
-      description:'Easily add, edit, and categorize your expenses and income. Stay on top of your finances with an intuitive and user-friendly interface designed to make tracking your spending effortless.'
+      id: '1',
+      heading: 'Manage Your Finances Seamlessly',
+      description: 'Easily add, edit, and categorize your expenses and income. Stay on top of your finances with an intuitive and user-friendly interface designed to make tracking your spending effortless.'
     },
     {
-      id:'2',
-      heading:'Visualize Spending',
-      description:'Track your expenses with interactive charts and graphs that provide a clear overview of where your money goes each month.'
+      id: '2',
+      heading: 'Visualize Spending',
+      description: 'Track your expenses with interactive charts and graphs that provide a clear overview of where your money goes each month.'
     },
     {
-      id:'3',
-      heading:'Set Budgets',
-      description:'Define budgets for various categories and monitor your spending to ensure you stay within your financial goals.'
+      id: '3',
+      heading: 'Set Budgets',
+      description: 'Define budgets for various categories and monitor your spending to ensure you stay within your financial goals.'
     },
     {
-      id:'4',
-      heading:'Multi-Currency Support',
-      description:'Manage expenses and income in multiple currencies, with automatic conversions to your preferred currency.'
+      id: '4',
+      heading: 'Multi-Currency Support',
+      description: 'Manage expenses and income in multiple currencies, with automatic conversions to your preferred currency.'
     },
     {
-      id:'5',
-      heading:'Secure Data',
-      description:'Enjoy peace of mind with robust data encryption and secure storage, ensuring your financial information is always protected.'
+      id: '5',
+      heading: 'Secure Data',
+      description: 'Enjoy peace of mind with robust data encryption and secure storage, ensuring your financial information is always protected.'
     },
   ]
 
@@ -186,20 +186,20 @@ export default function Home() {
         </div>
         <div className='bg-gray-200 dark:bg-inherit flex gap-2 p-10 md:p-20'>
           <div className="space-y-8">
-            {details.map((item:any) => (
+            {details.map((item: any) => (
               <div className="flex flex-col gap-2" key={item.id}>
-              <Label>{item.heading}</Label>
-              <Label className="text-xs tracking-wider font-light">{item.description}</Label>
-            </div>
+                <Label>{item.heading}</Label>
+                <Label className="text-xs tracking-wider font-light">{item.description}</Label>
+              </div>
             ))}
-            <Button>Sign Up Now !</Button>
+            <Button type='button'>Sign Up Now !</Button>
           </div>
 
           <div>
             <Image
               src={phonemockup}
               alt='phonemockup'
-              className='hidden lg:block border border-zinc-950 w-80 h-auto rounded-lg relative hover:shadow-lg hover:shadow-zinc-950 transition ease-in-out'
+              className='hidden lg:block border border-zinc-950 w-80 h-auto rounded-md relative hover:shadow-lg hover:shadow-zinc-950 transition ease-in-out'
             />
           </div>
         </div>

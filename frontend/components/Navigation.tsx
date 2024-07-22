@@ -1,9 +1,11 @@
 'use client'
 
-import React, { useState, ReactNode, memo } from 'react'
+import React, { useState, ReactNode, memo, useEffect } from 'react'
 import Label from './ui/Label'
 import Link from 'next/link';
 import ClickOutside from './ClickOutside';
+import { usePathname } from 'next/navigation';
+import Tooltip from './ui/Tooltip';
 
 interface NavItemProps {
     open?: boolean
@@ -15,9 +17,17 @@ interface NavItemProps {
 
 const NavItem = memo(({ open, icon, children, href = '', className }: NavItemProps) => (
     <Link href={href}>
-        <div className={`flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-black rounded-md py-3 px-[9px] cursor-pointer ${className}`}>
-            {icon}
-            <span className={open ? 'block' : 'hidden'}>{children}</span>
+        <div className={`flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-black z-50 rounded-md py-3 px-[9px] cursor-pointer ${className}`}>
+            {open ? (
+                <>
+                    {icon}
+                    <span>{children}</span>
+                </>
+            ) : (
+                <Tooltip text={children}>
+                    {icon}
+                </Tooltip>
+            )}
         </div>
     </Link>
 ));
@@ -33,7 +43,29 @@ function disableDrawer() {
 
 const Navigation: React.FC = () => {
 
-    const [open, setOpen] = useState<boolean>(false)
+    const [open, setOpen] = useState(() => {
+        // This function will only run once on initial render
+        if (typeof window !== 'undefined') {
+            const savedOpen = localStorage.getItem('navigationOpen');
+            return savedOpen !== null ? JSON.parse(savedOpen) : false;
+        }
+        return false;
+    });
+
+    const pathname = usePathname();
+
+    useEffect(() => {
+        // Load the navigation state from localStorage when the component mounts
+        const savedOpen = localStorage.getItem('navigationOpen');
+        if (savedOpen !== null) {
+            setOpen(JSON.parse(savedOpen));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('navigationOpen', JSON.stringify(open));
+    }, [open]);
+
 
     const pages = [
         {
@@ -90,19 +122,22 @@ const Navigation: React.FC = () => {
         },
     ]
 
-    
+
 
     return (
         <div>
             <aside
-                className={`fixed h-screen bg-gray-50 dark:bg-zinc-950 w-16 hover:w-48 transition-all hidden flex-col z-10 md:flex`}
-                onMouseEnter={() => setOpen(true)}
-                onMouseLeave={() => setOpen(false)}
-            >
+                className={`relative h-screen overflow-y-hidden bg-gray-50 dark:bg-zinc-950 transition-all hidden flex-col  md:flex ${open ? 'w-48' : 'w-16'}`}>
                 <div className={`mt-5 m-2 flex-1`}>
                     <ul className='flex flex-col gap-2'>
+                        <button className={`flex ${open ? 'justify-end pr-2' : 'justify-center'} transition-all`} onClick={() => setOpen(!open)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" className='text-black dark:text-white' fill="none">
+                            <path className={open ? 'hidden' : 'block'} d="M4 5L20 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                            <path className={open ? 'hidden' : 'block'} d="M4 12L20 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                            <path className={open ? 'hidden' : 'block'} d="M4 19L20 19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                            <path className={open ? 'block' : 'hidden'} d="M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg></button>
                         {pages.map((item: any) => (
-                            <NavItem href={item.href} open={open} icon={item.image} key={item.label} className={location.pathname.includes(item.href) && 'bg-gray-200 dark:bg-black'}>
+                            <NavItem href={item.href} open={open} icon={item.image} key={item.label} className={pathname === item.href && 'bg-gray-200 dark:bg-black'}>
                                 <Label className='cursor-pointer select-none'>{item.label}</Label>
                             </NavItem>
                         ))}
@@ -138,10 +173,10 @@ const Navigation: React.FC = () => {
                                     <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </button>
-                            <div className={`mt-8 flex-1`}>
+                            <div className={`mt-10 flex-1`}>
                                 <ul className='flex flex-col gap-2'>
                                     {pages.map((item: any) => (
-                                        <NavItem href={item.href} open={true} icon={item.image} key={item.label}>
+                                        <NavItem href={item.href} open={true} icon={item.image} key={item.label} className={pathname === item.href && 'bg-gray-200 dark:bg-black'}>
                                             <Label className='cursor-pointer select-none'>{item.label}</Label>
                                         </NavItem>
                                     ))}
