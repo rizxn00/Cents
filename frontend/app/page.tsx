@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import Label from "@/components/ui/Label";
 import Image from "next/image";
 import Link from 'next/link';
+import Logo from '@/assets/images/cents.png'
 import BackgroundImage from '@/assets/images/background_image.png'
 import dashboard from '@/assets/images/dashboard_dark.png'
 import expencetab from '@/assets/images/expence_tab.png'
@@ -126,7 +127,7 @@ export default function Home() {
               </button>
             </div>
             <div className='flex items-center'>
-              Cents
+              <Image src={Logo} alt="logo" className="w-10 h-auto invert dark:invert-0" />
             </div>
             <div className="gap-5 items-center hidden md:flex">
               <Label className='text-sm'>Home</Label>

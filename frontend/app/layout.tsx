@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={unbounded.className}>{children}</body>
+      <body className={unbounded.className} suppressHydrationWarning={true}>{children}</body>
     </html>
   );
 }

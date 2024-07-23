@@ -18,9 +18,15 @@ const config: Config = {
           '0%': { transform: 'translateY(100%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        press: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.93)' },
+          'to': { transform: 'scale(1)' },
+        }
       },
       animation: {
         slideUp: 'slideUp 0.3s ease-in-out',
+        press: 'press 0.2s ease-in-out'
       },
     },
   },

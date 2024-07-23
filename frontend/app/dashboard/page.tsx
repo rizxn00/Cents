@@ -22,6 +22,45 @@ export default function Dashboard() {
     };
 
 
+    const Transactions = [
+        {
+            'type': 'expense',
+            'category': 'Rent/Mortgage',
+            'date': '25/10/2023',
+            'price': '200',
+            'description': 'rent for this month is paid for'
+        },
+        {
+            'type': 'income',
+            'category': 'Salary',
+            'date': '10/01/2024',
+            'price': '1000',
+            'description': 'salary for Jan'
+        },
+        {
+            'type': 'expense',
+            'category': 'Clothings',
+            'date': '30/05/2024',
+            'price': '500',
+            'description': 'bought outfits'
+        },
+        {
+            'type': 'income',
+            'category': 'Wages',
+            'date': '10/01/2024',
+            'price': '450',
+            'description': 'wage for assets'
+        },
+        {
+            'type': 'income',
+            'category': 'Royalty',
+            'date': '30/05/2024',
+            'price': '2500',
+            'description': 'royalty for the stock'
+        },
+    ]
+
+
     function greetings() {
         const greeting = document.getElementById("greeting");
         const hour = new Date().getHours();
@@ -126,6 +165,24 @@ export default function Dashboard() {
                     <Card className='h-fit'>
                         <LineChart data={monthlyExpenseData} />
                     </Card>
+                    </div>
+                </div>
+                
+                <div>
+                    <Label className='text-xl font-semibold'>Recent Transcations</Label>
+                    <div className='mt-2'>
+                    {Transactions.map((e: any, index: number) => (
+                        <Card className='mb-5 flex flex-col' key={index}>
+                            <div className='flex justify-between'>
+                                <div className='flex gap-3 items-center'>
+                                    <p className='font-medium text-lg'>{e.category}</p>
+                                    <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
+                                </div>
+                            </div>
+                            <div className={`text-xl ${e.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>${e.price}</div>
+                            <Label className='text-xs font-light'>{e.description}</Label>
+                        </Card>
+                    ))}
                     </div>
                 </div>
             </div>

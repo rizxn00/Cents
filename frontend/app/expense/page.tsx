@@ -97,26 +97,23 @@ export default function Report() {
 
     const Expenses = [
         {
-            'id': '1',
             'category': 'Rent/Mortgage',
             'date': '25/10/2023',
             'price': '200',
             'description': 'rent for this month is paid for'
         },
         {
-            'id': '2',
             'category': 'Fuel',
             'date': '10/01/2024',
             'price': '50',
             'description': 'fuel expense'
         },
         {
-            'id': '3',
             'category': 'Clothings',
             'date': '30/05/2024',
             'price': '500',
             'description': 'bought outfits'
-        }
+        },
     ]
 
 
@@ -134,13 +131,13 @@ export default function Report() {
                         </svg>
                         Expense</Button>
                 </div>
-                <Label className='text-5xl font-semibold'>$ 50000</Label>
+                <Label className='text-5xl font-semibold'>$50000</Label>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
-                    {Expenses.map((e) => (
-                        <Card className='mt-5 flex flex-col' key={e.id}>
+                    {Expenses.map((e: any, index: number) => (
+                        <Card className='mt-5 flex flex-col' key={index}>
                             <div className='flex justify-between'>
-                                <div className='flex gap-3'>
+                                <div className='flex gap-3 items-center'>
                                     <Label className='font-medium text-lg'>{e.category}</Label>
                                     <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
                                 </div>
@@ -161,7 +158,7 @@ export default function Report() {
                                     </div>
                                 </div>
                             </div>
-                            <Label className='text-lg'>$ {e.price}</Label>
+                            <div className='text-lg'>${e.price}</div>
                             <Label className='text-xs font-light'>{e.description}</Label>
                         </Card>
                     ))}

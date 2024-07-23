@@ -86,28 +86,24 @@ export default function Income() {
 
     const Income = [
         {
-            'id': '1',
             'category': 'Salary',
             'date': '25/10/2023',
             'price': '1200',
             'description': 'salary for this month'
         },
         {
-            'id': '2',
             'category': 'Wages',
             'date': '10/01/2024',
             'price': '450',
-            'description': 'wage for the shop in banglore'
+            'description': 'wage for assets'
         },
         {
-            'id': '3',
             'category': 'Royalty',
             'date': '30/05/2024',
             'price': '2500',
-            'description': 'royalty for the stock IRCTC'
+            'description': 'royalty for the stock'
         },
         {
-            'id': '4',
             'category': 'Others',
             'date': '01/06/2024',
             'price': '100',
@@ -129,11 +125,11 @@ export default function Income() {
                         </svg>
                         Income</Button>
                 </div>
-                <Label className='text-5xl font-semibold text-green-700 dark:text-green-700'>$ 50000</Label>
+                <Label className='text-5xl font-semibold text-green-700 dark:text-green-700'>$30000</Label>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
-                    {Income.map((e) => (
-                        <Card className='mt-5 flex flex-col' key={e.id}>
+                    {Income.map((e: any, index: number) => (
+                        <Card className='mt-5 flex flex-col' key={index}>
                             <div className='flex justify-between'>
                                 <div className='flex gap-3'>
                                     <Label className='font-medium text-lg'>{e.category}</Label>
@@ -156,7 +152,7 @@ export default function Income() {
                                     </div>
                                 </div>
                             </div>
-                            <Label className='text-lg'>$ {e.price}</Label>
+                            <div className='text-lg'>${e.price}</div>
                             <Label className='text-xs font-light'>{e.description}</Label>
                         </Card>
                     ))}

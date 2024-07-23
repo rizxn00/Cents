@@ -27,7 +27,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, text }) => {
     const handleMouseEnter = () => {
         timeoutRef.current = setTimeout(() => {
             setIsVisible(true);
-        }, 1000); 
+        }, 800); 
     };
 
     const handleMouseLeave = () => {
