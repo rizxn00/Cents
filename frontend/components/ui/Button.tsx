@@ -1,6 +1,4 @@
-'use client'
-
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 
 type buttonType = {
     children: ReactNode;
@@ -10,25 +8,6 @@ type buttonType = {
 };
 
 export function Button({ children, className, type, onClick }: buttonType) {
-    useEffect(() => {
-        const button = document.getElementById('button');
-        button?.addEventListener('click', () => {
-            button.classList.add('animate-press');
-            setTimeout(() => {
-                button.classList.remove('animate-press');
-            }, 1000);
-        });
-
-        // Cleanup event listener
-        return () => {
-            button?.removeEventListener('click', () => {
-                button.classList.add('animate-press');
-                setTimeout(() => {
-                    button.classList.remove('animate-press');
-                }, 1000);
-            });
-        };
-    }, []);
 
     return (
         <button
@@ -43,25 +22,6 @@ export function Button({ children, className, type, onClick }: buttonType) {
 }
 
 export function CancelButton({ children, className, type, onClick }: buttonType) {
-    useEffect(() => {
-        const button = document.getElementById('button');
-        button?.addEventListener('click', () => {
-            button.classList.add('animate-press');
-            setTimeout(() => {
-                button.classList.remove('animate-press');
-            }, 1000);
-        });
-
-        // Cleanup event listener
-        return () => {
-            button?.removeEventListener('click', () => {
-                button.classList.add('animate-press');
-                setTimeout(() => {
-                    button.classList.remove('animate-press');
-                }, 1000);
-            });
-        };
-    }, []);
 
     return (
         <button

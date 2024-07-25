@@ -127,7 +127,7 @@ export default function Home() {
               </button>
             </div>
             <div className='flex items-center'>
-              <Image src={Logo} alt="logo" className="w-10 h-auto invert dark:invert-0" />
+              <Image src={Logo} alt="logo" className="w-8 md:w-10 h-auto invert dark:invert-0" />
             </div>
             <div className="gap-5 items-center hidden md:flex">
               <Label className='text-sm'>Home</Label>

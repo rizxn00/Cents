@@ -15,11 +15,11 @@ export default function SignUp() {
             <Image src={BackgroundImage} alt='background-image' className='absolute h-screen w-full -z-10 block dark:hidden' />
             <Image src={DarkBackgroundImage} alt='background-image' className='absolute h-screen w-full -z-10 hidden dark:block' />
             <Image src={Register_Illustration} alt='login-image' className='h-[400px] hidden md:block' />
-            <div className='flex flex-col bg-white dark:bg-zinc-950 px-6 sm:px-16 transition-all pt-16 pb-10 gap-5 shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl'>
+            <div className='flex flex-col bg-white dark:bg-zinc-950 items-center pt-16 pb-10 gap-5 transition-all shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl w-full max-w-[90%] md:max-w-lg lg:max-w-xl'>
                 <div className='flex justify-center'>
                     <Image src={Logo} alt="logo" className="w-16 h-auto invert dark:invert-0" />
                 </div>
-                <form className='flex flex-col w-96 gap-4 mt-5'>
+                <form className='flex flex-col w-full px-5 md:px-12 lg:px-16 gap-4 mt-5'>
                     <div className='flex flex-col gap-1'>
                         <Label>Email</Label>
                         <Input type="email" />

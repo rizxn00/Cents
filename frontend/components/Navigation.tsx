@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ClickOutside from './ClickOutside';
 import { usePathname } from 'next/navigation';
 import Tooltip from './ui/Tooltip';
+import Modal from './ui/Modal';
 
 interface NavItemProps {
     open?: boolean
@@ -13,22 +14,23 @@ interface NavItemProps {
     children: ReactNode
     href?: string | object;
     className?: ReactNode
+    onClick?: () => void
 }
 
-const NavItem = memo(({ open, icon, children, href = '', className }: NavItemProps) => (
+const NavItem = memo(({ open, icon, children, href = '', className, onClick }: NavItemProps) => (
     <Link href={href}>
-        <div className={`flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-black z-50 rounded-md py-3 px-[9px] cursor-pointer ${className}`}>
-            {open ? (
-                <>
+        {!open ? (
+            <Tooltip text={children}>
+                <div onClick={onClick} className={`flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-black z-50 rounded-md py-3 px-2 ${!open && 'justify-center'} cursor-pointer ${className}`}>
                     {icon}
-                    <span>{children}</span>
-                </>
-            ) : (
-                <Tooltip text={children}>
-                    {icon}
-                </Tooltip>
-            )}
-        </div>
+                </div>
+            </Tooltip>
+        ) :
+            <div onClick={onClick}  className={`flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-black z-50 rounded-md py-3 px-2 ${!open && 'justify-center'} cursor-pointer ${className}`}>
+                {icon}
+                <span>{children}</span>
+            </div>
+        }
     </Link>
 ));
 
@@ -52,6 +54,8 @@ const Navigation: React.FC = () => {
         return false;
     });
 
+    const [logout, setLogout] = useState<boolean>(false)
+
     const pathname = usePathname();
 
     useEffect(() => {
@@ -70,12 +74,12 @@ const Navigation: React.FC = () => {
     const pages = [
         {
             'href': 'dashboard',
-            'image': (<div>
-                <svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="28" height="28" fill="none">
-                    <path d="M20.5 15.8278C17.9985 21.756 9.86407 23.4835 5.20143 18.8641C0.629484 14.3347 2.04493 6.12883 8.05653 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M17.6831 12.5C19.5708 12.5 20.5146 12.5 21.1241 11.655C21.1469 11.6234 21.1848 11.5667 21.2052 11.5336C21.7527 10.6471 21.4705 9.966 20.9063 8.60378C20.3946 7.36853 19.6447 6.24615 18.6993 5.30073C17.7538 4.35531 16.6315 3.60536 15.3962 3.0937C14.034 2.52946 13.3529 2.24733 12.4664 2.79477C12.4333 2.81523 12.3766 2.85309 12.345 2.87587C11.5 3.4854 11.5 4.42922 11.5 6.31686V8.42748C11.5 10.3473 11.5 11.3072 12.0964 11.9036C12.6928 12.5 13.6527 12.5 15.5725 12.5H17.6831Z" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-            </div>),
+            'image': (<svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="28" height="28" fill="none">
+                <path d="M2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2C7.88562 2 8.82843 2 9.41421 2.58579C10 3.17157 10 4.11438 10 6V8C10 9.88562 10 10.8284 9.41421 11.4142C8.82843 12 7.88562 12 6 12C4.11438 12 3.17157 12 2.58579 11.4142C2 10.8284 2 9.88562 2 8V6Z" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M2 19C2 18.0681 2 17.6022 2.15224 17.2346C2.35523 16.7446 2.74458 16.3552 3.23463 16.1522C3.60218 16 4.06812 16 5 16H7C7.93188 16 8.39782 16 8.76537 16.1522C9.25542 16.3552 9.64477 16.7446 9.84776 17.2346C10 17.6022 10 18.0681 10 19C10 19.9319 10 20.3978 9.84776 20.7654C9.64477 21.2554 9.25542 21.6448 8.76537 21.8478C8.39782 22 7.93188 22 7 22H5C4.06812 22 3.60218 22 3.23463 21.8478C2.74458 21.6448 2.35523 21.2554 2.15224 20.7654C2 20.3978 2 19.9319 2 19Z" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M14 16C14 14.1144 14 13.1716 14.5858 12.5858C15.1716 12 16.1144 12 18 12C19.8856 12 20.8284 12 21.4142 12.5858C22 13.1716 22 14.1144 22 16V18C22 19.8856 22 20.8284 21.4142 21.4142C20.8284 22 19.8856 22 18 22C16.1144 22 15.1716 22 14.5858 21.4142C14 20.8284 14 19.8856 14 18V16Z" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M14 5C14 4.06812 14 3.60218 14.1522 3.23463C14.3552 2.74458 14.7446 2.35523 15.2346 2.15224C15.6022 2 16.0681 2 17 2H19C19.9319 2 20.3978 2 20.7654 2.15224C21.2554 2.35523 21.6448 2.74458 21.8478 3.23463C22 3.60218 22 4.06812 22 5C22 5.93188 22 6.39782 21.8478 6.76537C21.6448 7.25542 21.2554 7.64477 20.7654 7.84776C20.3978 8 19.9319 8 19 8H17C16.0681 8 15.6022 8 15.2346 7.84776C14.7446 7.64477 14.3552 7.25542 14.1522 6.76537C14 6.39782 14 5.93188 14 5Z" stroke="currentColor" strokeWidth="1.5" />
+            </svg>),
             'label': 'Dashboard',
         },
         {
@@ -137,11 +141,11 @@ const Navigation: React.FC = () => {
                             <path className={open ? 'block' : 'hidden'} d="M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg></button>
                         {pages.map((item: any) => (
-                            <NavItem href={item.href} open={open} icon={item.image} key={item.label} className={pathname === item.href && 'bg-gray-200 dark:bg-black'}>
+                            <NavItem href={item.href} open={open} icon={item.image} key={item.label} className={pathname.includes(item.href) && 'bg-gray-200 dark:bg-black'}>
                                 <Label className='cursor-pointer select-none'>{item.label}</Label>
                             </NavItem>
                         ))}
-                        <NavItem open={open} icon={
+                        <NavItem onClick={() => setLogout(true)} open={open} icon={
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="28" height="28" fill="none">
                                     <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -165,7 +169,7 @@ const Navigation: React.FC = () => {
                 </label>
 
 
-                <div className="fixed top-0 left-0 z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white dark:bg-zinc-950 shadow-lg peer-checked:translate-x-0">
+                <div className="fixed top-0 left-0 z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white dark:bg-zinc-900 shadow-lg peer-checked:translate-x-0">
                     <ClickOutside onClick={disableDrawer}>
                         <div className="px-2 py-4 flex flex-col justify-between">
                             <button onClick={disableDrawer} className='absolute top-4 right-4'>
@@ -176,11 +180,11 @@ const Navigation: React.FC = () => {
                             <div className={`mt-10 flex-1`}>
                                 <ul className='flex flex-col gap-2'>
                                     {pages.map((item: any) => (
-                                        <NavItem href={item.href} open={true} icon={item.image} key={item.label} className={pathname === item.href && 'bg-gray-200 dark:bg-black'}>
+                                        <NavItem href={item.href} open={true} icon={item.image} key={item.label} className={pathname.includes(item.href) && 'bg-gray-200 dark:bg-black'}>
                                             <Label className='cursor-pointer select-none'>{item.label}</Label>
                                         </NavItem>
                                     ))}
-                                    <NavItem open={true} icon={
+                                    <NavItem onClick={() => setLogout(true)} open={true} icon={
                                         <div>
                                             <svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="28" height="28" fill="none">
                                                 <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -196,6 +200,18 @@ const Navigation: React.FC = () => {
                     </ClickOutside>
                 </div>
             </div>
+
+            <Modal isOpen={logout} Title='Logout' onClose={() => setLogout(false)} buttonText='Logout'>
+                <div className='flex gap-3 items-center'>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" className='dark:text-white' fill="none">
+                            <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            <path d="M21 12H10M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
+                    <Label>Are you sure you wanna logout ? </Label>
+                </div>
+            </Modal>
         </div>
 
     )

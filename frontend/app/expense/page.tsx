@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import ClickOutside from '@/components/ClickOutside'
 import { Button } from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
@@ -122,8 +121,8 @@ export default function Report() {
         <HomeLayout>
             <div className='flex flex-col gap-10'>
                 <div className='flex justify-between'>
-                    <div>
-                        <Label className='text-2xl font-bold'>Expense Details</Label>
+                    <div className='flex items-center'>
+                        <Label className='text-xl md:text-2xl font-bold'>Expense Details</Label>
                     </div>
                     <Button type='button' onClick={() => setAddExpense(!addExpense)} className='flex h-fit gap-2'>
                         <svg className='text-white' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -131,7 +130,7 @@ export default function Report() {
                         </svg>
                         Expense</Button>
                 </div>
-                <Label className='text-5xl font-semibold'>$50000</Label>
+                <p className='text-5xl font-semibold text-red-800'>$50000</p>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
                     {Expenses.map((e: any, index: number) => (
@@ -165,30 +164,26 @@ export default function Report() {
                 </div>
             </div>
 
-            {addExpense && (
-                <ClickOutside onClick={() => setAddExpense(false)}>
-                    <Modal Title="Add Expense" isOpen={addExpense} onClose={() => setAddExpense(false)} buttonText="Submit">
-                        <form action="" className="flex flex-col gap-5">
-                            <div className="flex flex-col gap-1">
-                                <Label htmlFor="description">Description</Label>
-                                <Input type="text" name="description" />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <Label>Category</Label>
-                                <Select options={expenses} placeholder='Choose a category' />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <Label>Expense</Label>
-                                <Input type="number" className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <Label>Date</Label>
-                                <Input type="date" defaultValue={today} />
-                            </div>
-                        </form>
-                    </Modal>
-                </ClickOutside>
-            )}
+            <Modal Title="Add Expense" isOpen={addExpense} onClose={() => setAddExpense(false)} buttonText="Submit">
+                <form action="" className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-1">
+                        <Label htmlFor="description">Description</Label>
+                        <Input type="text" name="description" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <Label>Category</Label>
+                        <Select options={expenses} placeholder='Choose a category' />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <Label>Expense</Label>
+                        <Input type="number" className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <Label>Date</Label>
+                        <Input type="date" defaultValue={today} />
+                    </div>
+                </form>
+            </Modal>
         </HomeLayout>
     )
 }

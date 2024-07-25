@@ -3,15 +3,17 @@ import ClickOutside from '../ClickOutside';
 
 type selectPropType = {
     options: string[]
+    value?:string
     placeholder?: string
 }
 
-export default function Select({ options, placeholder }: selectPropType) {
+export default function Select({ options, value, placeholder }: selectPropType) {
     const [showOptions, setShowOptions] = useState<boolean>(false)
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const filtered = options.filter(option =>
@@ -28,31 +30,27 @@ export default function Select({ options, placeholder }: selectPropType) {
 
     const handleButtonClick = () => {
         setShowOptions(!showOptions);
-        if (buttonRef.current) {
-            buttonRef.current.focus();
+        if (inputRef.current) {
+            inputRef.current.focus();
         }
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (event.key === 'Backspace') {
-            setSearchTerm(prev => prev.slice(0, -1));
-        } else if (event.key.length === 1) {
-            setSearchTerm(prev => prev + event.key);
-        }
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
     };
 
     return (
         <ClickOutside onClick={() => setShowOptions(false)}>
             <div className="relative mt-2">
-                <button 
+                <button
                     ref={buttonRef}
-                    type="button" 
+                    type="button"
                     onClick={handleButtonClick}
-                    onKeyDown={handleKeyDown}
-                    className="relative w-full cursor-default rounded-md focus:ring-1 focus:ring-orange-400 focus:ring-inset py-3.5 pl-3 text-left text-sm font-light border bg-gray-100 dark:bg-zinc-900"
+                    value={value}
+                    className="relative w-full cursor-default rounded-md py-3.5 pl-3 text-left text-sm font-light bg-gray-100 dark:bg-zinc-900 focus:border-orange-700 dark:focus:border-orange-700 focus:border"
                 >
                     <span className="block truncate">
-                        {searchTerm || selectedOption || placeholder}
+                        {selectedOption || placeholder}
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -60,21 +58,33 @@ export default function Select({ options, placeholder }: selectPropType) {
                         </svg>
                     </span>
                 </button>
-                {showOptions &&
-                <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white dark:bg-zinc-950 dark:border py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    {filteredOptions.map((option: string) => (
-                    <li 
-                        className="relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-gray-100 dark:hover:bg-black"
-                        key={option}
-                        onClick={() => handleOptionClick(option)}
-                    >
-                        <div className="flex items-center">
-                            <span className="block truncate font-light text-sm">{option}</span>
+                {showOptions && (
+                    <div className="absolute z-10 mt-1 w-full bg-white dark:bg-zinc-950 dark:border rounded-md shadow-lg">
+                        <div className='p-2'>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleInputChange}
+                            className="w-full rounded-md bg-gray-100 dark:bg-zinc-900 py-3 pl-3 pr-2 text-black dark:text-white outline-none text-sm"
+                            placeholder="Search..."
+                        />
                         </div>
-                    </li>
-                    ))}
-                </ul>
-                }
+                        <ul className="max-h-48 overflow-auto py-1 text-base focus:outline-none sm:text-sm">
+                            {filteredOptions.map((option: string) => (
+                                <li
+                                    className="relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-gray-100 dark:hover:bg-black"
+                                    key={option}
+                                    onClick={() => handleOptionClick(option)}
+                                >
+                                    <div className="flex items-center">
+                                        <span className="block truncate font-light text-sm">{option}</span>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         </ClickOutside>
     )

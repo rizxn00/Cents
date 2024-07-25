@@ -10,26 +10,26 @@ import { Button } from '@/components/ui/Button';
 export default function Settings() {
 
     const currencies = [
-        'AUD A$',
-        'BRL R$',
-        'CAD C$',
-        'CHF CHF',
-        'CNY ¥',
-        'EUR €',
-        'GBP £',
-        'HKD HK$',
-        'INR ₹',
-        'JPY ¥',
-        'KRW ₩',
-        'MXN $',
-        'NZD NZ$',
-        'RUB ₽',
-        'SAR ر.س',
-        'SEK kr',
-        'SGD S$',
-        'TRY ₺',
-        'USD $',
-        'ZAR R'
+        { label: 'AUD A$', value: 'A$' },
+        { label: 'BRL R$', value: 'R$' },
+        { label: 'CAD C$', value: 'C$' },
+        { label: 'CHF CHF', value: 'CHF' },
+        { label: 'CNY ¥', value: '¥' },
+        { label: 'EUR €', value: '€' },
+        { label: 'GBP £', value: '£' },
+        { label: 'HKD HK$', value: 'HK$' },
+        { label: 'INR ₹', value: '₹' },
+        { label: 'JPY ¥', value: '¥' },
+        { label: 'KRW ₩', value: '₩' },
+        { label: 'MXN $', value: '$' },
+        { label: 'NZD NZ$', value: 'NZ$' },
+        { label: 'RUB ₽', value: '₽' },
+        { label: 'SAR ر.س', value: 'ر.س' },
+        { label: 'SEK kr', value: 'kr' },
+        { label: 'SGD S$', value: 'S$' },
+        { label: 'TRY ₺', value: '₺' },
+        { label: 'USD $', value: '$' },
+        { label: 'ZAR R', value: 'R' },
     ]
 
     return (
@@ -39,8 +39,8 @@ export default function Settings() {
             </div>
             <div className='mt-10 flex flex-col gap-10'>
                 <div>
-                    <Label>Currencies</Label>
-                    <Select options={currencies} placeholder='Choose a currency' />
+                    <Label>Preferred Currency</Label>
+                    <Select options={currencies.map((item) => (item.label))} placeholder='Choose a currency' />
                 </div>
                 <div className='space-y-2'>
                     <Label>Import Data</Label>
@@ -60,7 +60,7 @@ export default function Settings() {
                 <div className='space-y-2'>
                     <Label>Theme</Label>
                     <div>
-                    <ul className="grid w-full gap-6 md:grid-cols-2">
+                        <ul className="grid w-full gap-6 md:grid-cols-2">
                             <li>
                                 <input type="radio" name="theme" id="light" value="light" className="hidden peer" />
                                 <label htmlFor="light" className="inline-flex items-center justify-center w-full p-5 border-2 rounded-lg cursor-pointer h-24 bg-zinc-100 text-sm font-medium transition-all hover:bg-zinc-200 text-black">Light</label>

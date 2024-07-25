@@ -22,7 +22,7 @@ type cardPropType = {
 
 export default function Card({ children, className }: cardPropType) {
     return (
-        <div className={` ${className} rounded-xl hover:shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] bg-white dark:bg-zinc-950 px-5 py-5 dark:hover:shadow-zinc-950 transition-all border-none`}>
+        <div className={` ${className} rounded-xl hover:shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] bg-white dark:bg-zinc-900 px-5 py-5 dark:hover:shadow-zinc-800 dark:shadow-zinc-800 transition-all `}>
             {children}
         </div>
     )

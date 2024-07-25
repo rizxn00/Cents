@@ -16,60 +16,60 @@ export default function Income() {
     const [today, setToday] = useState<string>('');
 
     const income = [
-        "Salary",
-        "Wages",
-        "Bonuses",
-        "Commissions",
-        "Overtime pay",
-        "Self-employment income",
-        "Business profits",
-        "Freelance earnings",
-        "Consulting fees",
-        "Rental income",
-        "Dividends",
-        "Interest income",
-        "Capital gains",
-        "Royalties",
-        "Pension",
-        "Social Security benefits",
-        "Retirement account withdrawals",
-        "Unemployment benefits",
-        "Disability benefits",
+        "Ad revenue",
+        "Affiliate marketing",
+        "Airbnb or vacation rentals",
         "Alimony",
+        "Bonuses",
+        "Business profits",
+        "Capital gains",
         "Child support",
-        "Investment income",
-        "Stock options",
-        "Profit sharing",
-        "Trust fund distributions",
-        "Inheritance",
-        "Lottery winnings",
+        "Coaching or tutoring",
+        "Commissions",
+        "Consulting fees",
+        "Disability benefits",
+        "Dividends",
+        "E-book sales",
+        "Farm income",
+        "Freelance earnings",
         "Gambling winnings",
         "Gifts",
         "Grants",
-        "Scholarships",
-        "Tax refunds",
+        "Inheritance",
         "Insurance payouts",
-        "Sale of assets",
-        "Side gig income",
-        "Affiliate marketing",
-        "Sponsorships",
-        "Ad revenue",
-        "Coaching or tutoring",
-        "Speaking engagements",
-        "Workshop fees",
-        "Online course sales",
-        "E-book sales",
-        "Merchandise sales",
-        "Parking/garage rentals",
-        "Airbnb or vacation rentals",
-        "Peer-to-peer lending",
-        "Rebates and cashback",
+        "Interest income",
+        "Investment income",
         "Jury duty pay",
+        "Lottery winnings",
+        "Merchandise sales",
         "Military benefits",
-        "Farm income",
         "Mineral rights",
+        "Online course sales",
+        "Overtime pay",
+        "Parking/garage rentals",
+        "Pension",
+        "Peer-to-peer lending",
+        "Profit sharing",
+        "Rebates and cashback",
         "Recycling",
-        "Others"
+        "Rental income",
+        "Retirement account withdrawals",
+        "Royalties",
+        "Salary",
+        "Sale of assets",
+        "Scholarships",
+        "Self-employment income",
+        "Side gig income",
+        "Social Security benefits",
+        "Sponsorships",
+        "Speaking engagements",
+        "Stock options",
+        "Tax refunds",
+        "Trust fund distributions",
+        "Unemployment benefits",
+        "Wages",
+        "Workshop fees",
+        "Others",
     ];
 
     useEffect(() => {
@@ -116,8 +116,8 @@ export default function Income() {
         <HomeLayout>
             <div className='flex flex-col gap-10'>
                 <div className='flex justify-between'>
-                    <div>
-                        <Label className='text-2xl font-bold'>Income Details</Label>
+                    <div className='flex items-center'>
+                        <Label className='text-xl md:text-2xl transition-all font-bold'>Income Details</Label>
                     </div>
                     <Button type='button' onClick={() => setAddIncome(!addIncome)} className='flex h-fit gap-2'>
                         <svg className='text-white' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -125,13 +125,13 @@ export default function Income() {
                         </svg>
                         Income</Button>
                 </div>
-                <Label className='text-5xl font-semibold text-green-700 dark:text-green-700'>$30000</Label>
+                <p className='text-5xl font-semibold text-green-800'>$30000</p>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
                     {Income.map((e: any, index: number) => (
                         <Card className='mt-5 flex flex-col' key={index}>
                             <div className='flex justify-between'>
-                                <div className='flex gap-3'>
+                                <div className='flex gap-3 items-center'>
                                     <Label className='font-medium text-lg'>{e.category}</Label>
                                     <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
                                 </div>
@@ -159,28 +159,26 @@ export default function Income() {
                 </div>
             </div>
 
-            {addIncome &&
-                <Modal Title='Add Income' isOpen={addIncome} onClose={() => setAddIncome(false)} buttonText='Submit'>
-                    <form action="" className='flex flex-col gap-5'>
-                        <div className='flex flex-col gap-1'>
-                            <Label htmlFor='description'>Description</Label>
-                            <Input type='text' name='description' />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <Label>Catergory</Label>
-                            <Select options={income} placeholder='Choose a category' />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <Label>Income</Label>
-                            <Input type="number" className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <Label>Date</Label>
-                            <Input type='date' defaultValue={today} />
-                        </div>
-                    </form>
-                </Modal>
-            }
+            <Modal Title='Add Income' isOpen={addIncome} onClose={() => setAddIncome(false)} buttonText='Submit'>
+                <form action="" className='flex flex-col gap-5'>
+                    <div className='flex flex-col gap-1'>
+                        <Label htmlFor='description'>Description</Label>
+                        <Input type='text' name='description' />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label>Catergory</Label>
+                        <Select options={income} placeholder='Choose a category' />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label>Income</Label>
+                        <Input type="number" className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label>Date</Label>
+                        <Input type='date' defaultValue={today} />
+                    </div>
+                </form>
+            </Modal>
         </HomeLayout>
     )
 }
