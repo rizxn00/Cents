@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
 const unbounded = Unbounded({ subsets: ['latin'] });
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={unbounded.className} suppressHydrationWarning={true}>{children}</body>
+      <body className={`${unbounded.className} bg-neutral-300 dark:bg-black`} suppressHydrationWarning={true}>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

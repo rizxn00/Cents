@@ -6,6 +6,7 @@ import Label from '@/components/ui/Label'
 import Select from '@/components/ui/Select'
 import Input from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Theme } from '@/components/ThemeSelector';
 
 export default function Settings() {
 
@@ -59,18 +60,7 @@ export default function Settings() {
                 </div>
                 <div className='space-y-2'>
                     <Label>Theme</Label>
-                    <div>
-                        <ul className="grid w-full gap-6 md:grid-cols-2">
-                            <li>
-                                <input type="radio" name="theme" id="light" value="light" className="hidden peer" />
-                                <label htmlFor="light" className="inline-flex items-center justify-center w-full p-5 border-2 rounded-lg cursor-pointer h-24 bg-zinc-100 text-sm font-medium transition-all hover:bg-zinc-200 text-black">Light</label>
-                            </li>
-                            <li>
-                                <input type="radio" name="theme" id="dark" value="dark" className="hidden peer" />
-                                <label htmlFor="dark" className="inline-flex items-center justify-center w-full p-5 border-2 rounded-lg cursor-pointer h-24 bg-zinc-950 text-sm font-medium transition-all hover:bg-zinc-900 text-white">Dark</label>
-                            </li>
-                        </ul>
-                    </div>
+                    <Theme/>
                 </div>
             </div>
 

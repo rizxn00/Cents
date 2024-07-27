@@ -175,7 +175,7 @@ export default function Dashboard() {
                         <Card className='mb-5 flex flex-col' key={index}>
                             <div className='flex justify-between'>
                                 <div className='flex gap-3 items-center'>
-                                    <p className='font-medium text-lg'>{e.category}</p>
+                                <Label className='font-medium text-lg'>{e.category}</Label>
                                     <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
                                 </div>
                             </div>
