@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card'
 import BarChart from '@/components/charts/BarChart'
 import DonutChart from '@/components/charts/DonutChart'
 import LineChart from '@/components/charts/LineChart'
+import { Loader } from '@/components/ui/Loader'
 import HomeLayout from '../home'
 
 
@@ -172,7 +173,7 @@ export default function Dashboard() {
                     <Label className='text-xl font-semibold'>Recent Transcations</Label>
                     <div className='mt-2'>
                     {Transactions.map((e: any, index: number) => (
-                        <Card className='mb-5 flex flex-col' key={index}>
+                        <Card className='mb-5 flex flex-col gap-1' key={index}>
                             <div className='flex justify-between'>
                                 <div className='flex gap-3 items-center'>
                                 <Label className='font-medium text-lg'>{e.category}</Label>
@@ -186,6 +187,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+
+            <Loader/>
             </HomeLayout>
     )
 }

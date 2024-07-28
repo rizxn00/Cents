@@ -1,17 +1,20 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import Label from './Label'
-import { Button, CancelButton } from './Button'
+import { Button, CancelButton, LoadingButton } from './Button'
 import ClickOutside from '../ClickOutside'
 
 type ModalPropType = {
     Title: string
     children: ReactNode
     buttonText: string
+    loadingText?:string
+    isLoading?: boolean
     onClose: () => void
     isOpen: boolean
+    onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
-export default function Modal({ children, Title, onClose, isOpen, buttonText }: ModalPropType) {
+export default function Modal({ children, Title, onClose, isOpen, buttonText, loadingText, isLoading,onSubmit }: ModalPropType) {
     const [showModal, setShowModal] = useState<boolean>(isOpen);
     const [animationState, setAnimationState] = useState<'opening' | 'closing' | 'none'>('none');
 
@@ -19,18 +22,17 @@ export default function Modal({ children, Title, onClose, isOpen, buttonText }: 
         if (isOpen) {
             setShowModal(true);
             setAnimationState('opening');
-        } else if (animationState === 'closing') {
+        } else {
+            setAnimationState('closing');
             const closeTimer = setTimeout(() => {
                 setShowModal(false);
                 setAnimationState('none');
             }, 200);
-
             return () => clearTimeout(closeTimer);
         }
-    }, [isOpen, animationState]);
+    }, [isOpen]);
 
     const handleClose = () => {
-        setAnimationState('closing');
         onClose();
     };
 
@@ -54,13 +56,18 @@ export default function Modal({ children, Title, onClose, isOpen, buttonText }: 
                                         </svg>
                                     </Button>
                                 </div>
-                                <div className="p-4 md:p-5 space-y-4">
-                                    {children}
-                                </div>
-                                <div className="flex justify-end gap-2 p-4 md:p-5">
-                                    <Button type="submit" className='px-4'>{buttonText}</Button>
-                                    <CancelButton type='button' onClick={handleClose} className='px-4'>Cancel</CancelButton>
-                                </div>
+                                <form onSubmit={onSubmit}>
+                                    <div className="p-4 md:p-5 space-y-4">
+                                        {children}
+                                    </div>
+                                    <div className="flex justify-end gap-2 p-4 md:p-5">
+                                        {!isLoading ? 
+                                        <Button type="submit" className='px-4'>{buttonText}</Button> :
+                                        <LoadingButton type='button'>{loadingText}</LoadingButton>
+                                        }
+                                        <CancelButton type='button' onClick={handleClose} className='px-4'>Cancel</CancelButton>
+                                    </div>
+                                </form>
                             </div>
                         </ClickOutside>
                     </div>

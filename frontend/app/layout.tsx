@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${unbounded.className} bg-neutral-300 dark:bg-black`} suppressHydrationWarning={true}>
-        <ThemeProvider attribute="class" defaultTheme="system">
+      <body className={`${unbounded.className} bg-neutral-300 dark:bg-black`} suppressHydrationWarning>
+      <ThemeProvider attribute="class" defaultTheme="system">
           {children}
         </ThemeProvider>
       </body>

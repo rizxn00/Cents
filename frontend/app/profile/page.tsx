@@ -62,22 +62,22 @@ export default function Profile() {
                         <Label className='text-xl'>john@email.com</Label>
                     </div>
                     <div className='col-span-2 gap-5 lg:gap-2 flex flex-col lg:grid grid-cols-3'>
-                        <Card className='whitespace-nowrap border border-zinc-500 dark:border-zinc-900'>
+                        <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                             <div className='flex gap-2 items-center'>
                                 <Label>Total Income:</Label>
-                                <p className='text-green-600 text-2xl'>$309928</p>
+                                <p className='text-green-600 text-xl'>$309928</p>
                             </div>
                         </Card>
-                        <Card className='whitespace-nowrap border border-zinc-500 dark:border-zinc-900'>
+                        <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                             <div className='flex gap-2 items-center'>
                                 <Label>Total Expenses:</Label>
-                                <p className='text-red-600 text-2xl'>$39928</p>
+                                <p className='text-red-600 text-xl'>$39928</p>
                             </div>
                         </Card>
-                        <Card className='whitespace-nowrap border border-zinc-500 dark:border-zinc-900'>
+                        <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                             <div className='flex gap-2 items-center'>
                                 <Label>Total Savings:</Label>
-                                <p className='text-orange-600 text-2xl'>$4000</p>
+                                <p className='text-orange-600 text-xl'>$4000</p>
                             </div>
                         </Card>
                     </div>

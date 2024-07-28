@@ -5,9 +5,11 @@ type selectPropType = {
     options: string[]
     value?:string
     placeholder?: string
+    defaultValue?:string
+    onChange?: (value: string) => void 
 }
 
-export default function Select({ options, value, placeholder }: selectPropType) {
+export default function Select({ options, value, placeholder, defaultValue,onChange}: selectPropType) {
     const [showOptions, setShowOptions] = useState<boolean>(false)
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -26,6 +28,7 @@ export default function Select({ options, value, placeholder }: selectPropType) 
         setSelectedOption(option);
         setShowOptions(false);
         setSearchTerm('');
+        if(onChange) onChange(option);
     };
 
     const handleButtonClick = () => {
@@ -41,16 +44,17 @@ export default function Select({ options, value, placeholder }: selectPropType) 
 
     return (
         <ClickOutside onClick={() => setShowOptions(false)}>
-            <div className="relative mt-2">
+            <div className="relative">
                 <button
                     ref={buttonRef}
                     type="button"
                     onClick={handleButtonClick}
                     value={value}
-                    className="relative w-full cursor-default rounded-md py-3.5 pl-3 text-left text-sm font-light bg-gray-200 dark:bg-zinc-900 focus:border-orange-700 dark:focus:border-orange-700 focus:border"
+                    defaultValue={defaultValue}
+                    className="relative w-full outline-none cursor-default rounded-md py-3.5 pl-3 text-left text-sm font-light bg-gray-200 dark:bg-zinc-900 focus:border-orange-700 dark:focus:border-orange-700 focus:border"
                 >
                     <span className="block truncate text-black dark:text-white">
-                        {selectedOption || placeholder}
+                        {selectedOption || placeholder || defaultValue}
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
