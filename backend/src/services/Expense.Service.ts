@@ -1,25 +1,22 @@
 import { supabase } from '../config/supabase'
 
 export class ExpenseService {
-    async createExpense(userEmail: string, amount: number, category: string, description: string, date: Date) {
+    async createExpense(id: string, amount: number, category: string, description: string, date: Date) {
         try {
         
             const { data: userData, error: userError } = await supabase
                 .from('profiles')
                 .select('id')
-                .eq('email', userEmail)
+                .eq('id', id)
                 .single();
     
             if (userError) throw new Error(`User not found: ${userError.message}`);
             if (!userData) throw new Error('User not found');
-    
-            const userId = userData.id;
-    
-        
+          
             const { data: insertData, error: insertError } = await supabase
                 .from('expenses')
                 .insert({
-                    user_id: userId,
+                    user_id: id,
                     amount,
                     category,
                     description,
@@ -37,7 +34,7 @@ export class ExpenseService {
             }
     
         
-            return { data: insertData[0] };
+            return { data: insertData[0], message:"Expense added" };
         } catch (error) {
             console.error('Error in createExpense service:', error);
             throw error;

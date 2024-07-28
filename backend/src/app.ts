@@ -1,8 +1,9 @@
 import express from 'express'
 import { initializeDatabase } from './utils/initializeDatabase'
 import dotenv from 'dotenv';
+import cors from 'cors'
 import authRoutes from './routes/auth.routes'
-import expenseRoutes from './routes/Expense.Routes'
+import expenseRoutes from './routes/expense.routes'
 import incomeRoutes from './routes/income.routes'
 
 dotenv.config();
@@ -10,6 +11,12 @@ dotenv.config();
 const app = express();
 
 const port = process.env.PORT || 8000;
+
+app.use(cors ({
+  origin:[process.env.ORIGIN || ''],
+  methods:['GET','POST', 'DELETE'],
+  credentials:true
+}))
 
 app.listen(port, async () => {
   console.log(`Server running at port ${port}`);

@@ -1,19 +1,19 @@
 import { Request, Response } from 'express'
-import { ExpenseService } from '../services/Expense.Service'
+import { ExpenseService } from '../services/expense.service'
 
 const expenseService = new ExpenseService()
 
 export class ExpenseController {
     async createExpense(req: Request, res: Response) {
         try {
-            const { email, amount, category, description, date } = req.body;
+            const { id, amount, category, description, date } = req.body;
 
-            if (!email || !amount || !category || !description || !date) {
+            if (!id || !amount || !category || !date) {
                 return res.status(400).json({ error: 'Missing required fields' });
             }
 
             const Expense = await expenseService.createExpense(
-                email,
+                id,
                 amount,
                 category,
                 description,

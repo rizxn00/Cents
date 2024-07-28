@@ -1,25 +1,22 @@
 import { supabase } from '../config/supabase'
 
 export class IncomeService {
-    async createIncome(userEmail: string, amount: number, category: string, description: string, date: Date) {
+    async createIncome(id: string, amount: number, category: string, description: string, date: Date) {
         try {
         
             const { data: userData, error: userError } = await supabase
                 .from('profiles')
                 .select('id')
-                .eq('email', userEmail)
+                .eq('id', id)
                 .single();
     
             if (userError) throw new Error(`User not found: ${userError.message}`);
-            if (!userData) throw new Error('User not found');
-    
-            const userId = userData.id;
-    
+            if (!userData) throw new Error('User not found');    
         
             const { data: insertData, error: insertError } = await supabase
                 .from('incomes')
                 .insert({
-                    user_id: userId,
+                    user_id: id,
                     amount,
                     category,
                     description,
@@ -37,7 +34,7 @@ export class IncomeService {
             }
     
         
-            return { data: insertData[0] };
+            return { data: insertData[0], message:"Income added"};
         } catch (error) {
             console.error('Error in createIncome service:', error);
             throw error;

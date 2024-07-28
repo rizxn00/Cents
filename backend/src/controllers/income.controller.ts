@@ -6,14 +6,14 @@ const incomeService = new IncomeService()
 export class IncomeController {
     async createIncome(req: Request, res: Response) {
         try {
-            const { email, amount, category, description, date } = req.body;
+            const { id, amount, category, description, date } = req.body;
 
-            if (!email || !amount || !category || !description || !date) {
+            if (!id || !amount || !category || !date) {
                 return res.status(400).json({ error: 'Missing required fields' });
             }
 
             const Income = await incomeService.createIncome(
-                email,
+                id,
                 amount,
                 category,
                 description,
