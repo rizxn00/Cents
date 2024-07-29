@@ -87,7 +87,7 @@ export class IncomeController {
         try {
             const { id, amount, category, description, date } = req.body;
 
-            if (!id) {
+            if (!id || !amount || !category || !date) {
                 return res.status(400).json({ error: 'Missing required fields' });
             }
 

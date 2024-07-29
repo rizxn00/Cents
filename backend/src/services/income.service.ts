@@ -95,7 +95,7 @@ export class IncomeService {
         }
 
         const { data: updatedData, error: updatedError } = await supabase
-        .from('income')
+        .from('incomes')
         .update({ amount, category, description, date })
         .eq('id', id)
         .select()  
