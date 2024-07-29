@@ -14,7 +14,7 @@ export const Loader = () => {
 
     return (
         <div className="flex justify-center items-center w-full h-96">
-            <div className="w-16 h-16 bg-orange-600 rounded-full flex justify-center items-center animate-bounce">
+            <div className="w-16 h-16 bg-yellow-800 rounded-full flex justify-center items-center animate-bounce">
                 <span className="text-xl font-bold text-white relative">
                     {currencies.map((currency, index) => (
                         <span

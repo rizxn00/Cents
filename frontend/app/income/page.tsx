@@ -12,6 +12,14 @@ import { SuccessAlert, ErrorAlert } from '@/components/ui/Alerts'
 import { Loader } from '@/components/ui/Loader';
 
 
+interface EditData {
+    id: string;
+    amount: string;
+    category: string;
+    description: string;
+    date: string;
+}
+
 export default function Income() {
 
     const [allIncomes, setAllIncomes] = useState<any>([])
@@ -19,7 +27,13 @@ export default function Income() {
     const [addIncome, setAddIncome] = useState<boolean>(false)
     const [today, setToday] = useState<string>('');
     const [edit, setEdit] = useState<boolean>(false)
-    const [editData, setEditData] = useState<any>()
+    const [editData, setEditData] = useState<EditData>({
+        id: '',
+        amount: '',
+        category: '',
+        description: '',
+        date: ''
+    });
     const [deletes, setDeletes] = useState<boolean>(false)
     const [deleteId, setDeleteId] = useState<string>('')
 
@@ -133,6 +147,8 @@ export default function Income() {
     
         } catch (error: any) {
             console.error("Error during creating income:", error);
+            setError(true)
+            setErrorData("An error occurred during creating income")
         }
     }
 
@@ -143,12 +159,60 @@ export default function Income() {
         setDate(today)
     }
 
-    const editIncome = (data: []) => {
+    const confirmEditIncome = (data: any) => {
         setEdit(true)
-        setEditData(data)
+        setEditData({
+            id: data.id,
+            amount: data.amount.toString(),
+            category: data.category,
+            description: data.description,
+            date: new Date(data.date).toISOString().split('T')[0] 
+        });
     }
 
-    const comfirmDeleteIncome = (id: string) => {
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string } }) => {
+        const { name, value } = e.target;
+        setEditData((prev: EditData) => ({ ...prev, [name]: value }));
+    };
+
+    const editIncome = async (event: any) => {
+        event.preventDefault()
+        setIsSubmitting(true)
+
+        const editedData = {
+            ...editData,
+            date: new Date(editData.date).toISOString()
+        };
+        console.log("send data", editedData);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(true)
+                setErrorData(data.error || "An error occurred during updating income")
+                setIsSubmitting(false)
+                return
+            }
+            setSuccess(true)
+            setSuccessData(data?.message)
+            setEdit(false)
+            setIsSubmitting(false)
+        } catch (error: any) {
+            console.error("Error during updating income:", error);
+            setError(true)
+            setErrorData("An error occurred during updating income")
+        }
+    }
+
+    const confirmDeleteIncome = (id: string) => {
         setDeletes(true)
         setDeleteId(id)
     }
@@ -178,6 +242,8 @@ export default function Income() {
     
         } catch (error: any) {
             console.error("Error during deleting income:", error);
+            setError(true)
+            setErrorData("An error occurred during deleting income")
         }
     }
 
@@ -206,6 +272,8 @@ export default function Income() {
             setAllIncomes(data)
         } catch (error: any) {
             console.error("Error during getting incomes:", error);
+            setError(true)
+            setErrorData("An error occurred during fetching incomes")
         }
     }
 
@@ -250,7 +318,7 @@ export default function Income() {
                                     <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
                                 </div>
                                 <div className='flex gap-3'>
-                                <button onClick={() => editIncome(e)}>
+                                <button onClick={() => confirmEditIncome(e)}>
                                         <div>
                                             <svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                                                 <path d="M15.2141 5.98239L16.6158 4.58063C17.39 3.80646 18.6452 3.80646 19.4194 4.58063C20.1935 5.3548 20.1935 6.60998 19.4194 7.38415L18.0176 8.78591M15.2141 5.98239L6.98023 14.2163C5.93493 15.2616 5.41226 15.7842 5.05637 16.4211C4.70047 17.058 4.3424 18.5619 4 20C5.43809 19.6576 6.94199 19.2995 7.57889 18.9436C8.21579 18.5877 8.73844 18.0651 9.78375 17.0198L18.0176 8.78591M15.2141 5.98239L18.0176 8.78591" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -259,7 +327,7 @@ export default function Income() {
                                         </div>
                                     </button>
 
-                                    <button onClick={() => comfirmDeleteIncome(e.id)}>
+                                    <button onClick={() => confirmDeleteIncome(e.id)}>
                                         <div>
                                             <svg xmlns="http://www.w3.org/2000/svg" className='dark:text-white' viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                                                 <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -300,25 +368,23 @@ export default function Income() {
             </Modal>
 
             {/* Edit Income Modal */}
-            <Modal Title="Edit Income" isOpen={edit} onClose={() => setEdit(false)} buttonText="Update">
-                <form action="" className="flex flex-col gap-5">
+            <Modal Title="Edit Income" isOpen={edit} onClose={() => { setEdit(false), setIsSubmitting(false) }} buttonText="Update" onSubmit={editIncome} isLoading={isSubmitting} loadingText='updating' >
                     <div className="flex flex-col gap-1">
                         <Label>Income</Label>
-                        <Input type="number" className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' defaultValue={editData?.amount} />
+                        <Input type="number" name="amount" value={editData.amount} onChange={handleEditChange} className='[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none' defaultValue={editData?.amount} />
                     </div>
                     <div className="flex flex-col gap-1">
                         <Label>Category</Label>
-                        <Select options={income} defaultValue={editData?.category} />
+                        <Select options={income} value={editData.category} onChange={(value) => handleEditChange({ target: { name: 'category', value } })} />
                     </div>
                     <div className="flex flex-col gap-1">
                         <Label htmlFor="description">Description</Label>
-                        <Input type="text" name="description" defaultValue={editData?.description} />
+                        <Input type="text" name="description" value={editData.description} onChange={handleEditChange}/>
                     </div>
                     <div className="flex flex-col gap-1">
                         <Label>Date</Label>
-                        <Input type="date" defaultValue={editData?.date} />
+                        <Input type="date" name="date" value={editData.date} onChange={handleEditChange} />
                     </div>
-                </form>
             </Modal>
 
             {/* Delete Income Modal */}

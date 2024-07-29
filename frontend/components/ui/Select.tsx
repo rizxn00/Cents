@@ -54,7 +54,7 @@ export default function Select({ options, value, placeholder, defaultValue,onCha
                     className="relative w-full outline-none cursor-default rounded-md py-3.5 pl-3 text-left text-sm font-light bg-gray-200 dark:bg-zinc-900 focus:border-orange-700 dark:focus:border-orange-700 focus:border"
                 >
                     <span className="block truncate text-black dark:text-white">
-                        {selectedOption || placeholder || defaultValue}
+                        {selectedOption || placeholder || defaultValue || value}
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
