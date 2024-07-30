@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth.routes'
 import expenseRoutes from './routes/expense.routes'
 import incomeRoutes from './routes/income.routes'
+import sharedRoutes from './routes/shared.routes'
 
 dotenv.config();
 
@@ -32,5 +33,6 @@ app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/expenses', expenseRoutes)
 app.use('/api/incomes', incomeRoutes)
+app.use('/api/shared', sharedRoutes)
 
 export default app

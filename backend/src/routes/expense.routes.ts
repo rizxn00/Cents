@@ -5,7 +5,7 @@ const router = express.Router()
 const expenseController = new ExpenseController()
 
 router.post('/create', expenseController.createExpense)
-router.get('/get/:userId', expenseController.getExpenses)
+router.get('/get/:userId', expenseController.getMonthlyExpenses)
 router.delete('/delete/:id', expenseController.deleteExpense)
 router.post('/update', expenseController.updateExpense)
 

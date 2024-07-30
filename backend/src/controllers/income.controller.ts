@@ -32,21 +32,22 @@ export class IncomeController {
     }
 
 
-    async getIncomes(req: Request, res: Response) {
+    async getMonthlyIncomes(req: Request, res: Response) {
         try {
             const { userId } = req.params;
-
+    
             if (!userId) {
                 return res.status(400).json({ error: 'Missing required fields' });
             }
+    
+            const Incomes = await incomeService.getMonthlyIncomes(userId);
+    
+            const TotalIncome = Incomes.reduce((acc, curr) => acc + curr.amount, 0);
 
-            const Incomes = await incomeService.getIncomes(
-                userId
-            );
-
-            res.status(201).json(Incomes);
+    
+            res.status(200).json({ "Incomes": Incomes, "sum": TotalIncome });
         } catch (error) {
-            console.error('Error in getIncomes controller:', error);
+            console.error('Error in getMonthlyIncomes controller:', error);
             if (error instanceof Error) {
                 res.status(404).json({ error: error.message });
             } else {
@@ -54,6 +55,7 @@ export class IncomeController {
             }
         }
     }
+    
 
     async deleteIncome(req: Request, res: Response) {
         try {
@@ -98,6 +100,7 @@ export class IncomeController {
                 description,
                 date
             );
+            
 
             res.status(201).json(Income);
         } catch (error) {

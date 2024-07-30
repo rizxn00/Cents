@@ -41,17 +41,22 @@ export class ExpenseService {
         }
     }
 
-    async getExpenses(userId: string) {
-        const { data: Data, error: errorData } = await supabase
-            .from('expenses')
-            .select('id, amount, category, description, date')
-            .eq('user_id', userId)
-
-        if (errorData) throw new Error(`Error fetching expenses: ${errorData.message}`);
-        if (!Data || Data.length === 0) throw new Error('No expenses found for this user');
-
-        return Data
-    }
+    async getMonthlyExpenses(userId: string) {
+      const now = new Date();
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+  
+      const { data: Data, error: errorData } = await supabase
+          .from('expenses')
+          .select('id, amount, category, description, date')
+          .eq('user_id', userId)
+          .gte('date', firstDayOfMonth)
+          .lte('date', lastDayOfMonth);
+  
+      if (errorData) throw new Error(`Error fetching expenses: ${errorData.message}`);
+      if (!Data || Data.length === 0) throw new Error('No expenses found for this user in the current month');
+      return Data;
+  }
 
     async deleteExpense(id: string) {
         const { data: existingExpense, error: fetchError } = await supabase

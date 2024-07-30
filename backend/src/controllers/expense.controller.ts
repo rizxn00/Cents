@@ -32,7 +32,7 @@ export class ExpenseController {
     }
 
 
-    async getExpenses(req: Request, res: Response) {
+    async getMonthlyExpenses(req: Request, res: Response) {
         try {
             const { userId } = req.params;
 
@@ -40,11 +40,11 @@ export class ExpenseController {
                 return res.status(400).json({ error: 'Missing required fields' });
             }
 
-            const Expenses = await expenseService.getExpenses(
-                userId
-            );
+            const Expenses = await expenseService.getMonthlyExpenses(userId);
 
-            res.status(201).json(Expenses);
+            const TotalExpense = Expenses.reduce((acc, curr) => acc + curr.amount, 0);
+
+            res.status(201).json({"Expenses": Expenses, "sum": TotalExpense});
         } catch (error) {
             console.error('Error in getExpenses controller:', error);
             if (error instanceof Error) {

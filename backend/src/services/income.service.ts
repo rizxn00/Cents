@@ -41,15 +41,20 @@ export class IncomeService {
         }
     }
 
-    async getIncomes(userId: string) {
+    async getMonthlyIncomes(userId: string) {
+      const now = new Date();
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+
         const { data: Data, error: errorData } = await supabase
             .from('incomes')
             .select('id, amount, category, description, date')
             .eq('user_id', userId)
+            .gte('date', firstDayOfMonth)
+            .lte('date', lastDayOfMonth);
 
         if (errorData) throw new Error(`Error fetching incomes: ${errorData.message}`);
-        if (!Data || Data.length === 0) throw new Error('No incomes found for this user');
-
+        if (!Data || Data.length === 0) throw new Error('No incomes found for this user in the current month');
         return Data
     }
 
