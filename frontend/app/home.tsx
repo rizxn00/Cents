@@ -8,7 +8,7 @@ export default function HomeLayout({
     return (
         <div className={`flex flex-col md:flex-row min-h-screen h-screen overflow-hidden`}>
             <Navigation />
-            <main className="flex-1 overflow-auto p-5">
+            <main className="flex-1 overflow-auto p-5 pt-16 md:pt-5">
                 {children}
             </main>
         </div>

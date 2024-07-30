@@ -2,8 +2,16 @@ import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import localFont from '@next/font/local'
 
 const unbounded = Unbounded({ subsets: ['latin'] });
+const circular = localFont({
+  src: [
+    {
+      path: '../assets/circular-std-medium-500.ttf',
+    },
+  ]
+})
 
 export const metadata: Metadata = {
   title: "Cents",

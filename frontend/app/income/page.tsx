@@ -41,6 +41,7 @@ export default function Income() {
     const [category, setCategory] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [date, setDate] = useState<string>('')
+    const [sum, setSum] = useState<number>(0)
 
     const [success, setSuccess] = useState<boolean>(false)
     const [successData, setSuccessData] = useState<string>('')
@@ -141,6 +142,7 @@ export default function Income() {
             setSuccess(true)
             setSuccessData(data?.message)
             setAllIncomes([...allIncomes, data?.data])
+            setSum(sum + data?.data?.amount)
             setAddIncome(false)
             resetFormFields()
             setIsSubmitting(false)
@@ -181,6 +183,7 @@ export default function Income() {
 
         const editedData = {
             ...editData,
+            amount: Number(editData.amount),
             date: new Date(editData.date).toISOString()
         };
         console.log("send data", editedData);
@@ -201,6 +204,19 @@ export default function Income() {
                 setIsSubmitting(false)
                 return
             }
+
+            setAllIncomes((prevIncomes:any) => 
+                prevIncomes.map((e:EditData) => 
+                    e.id === editedData.id ? { ...e, ...editedData } : e
+                )
+            );
+            
+            const IncomeToUpdate = allIncomes.find((e: EditData) => e.id === editedData.id);
+            if (IncomeToUpdate) {
+                const amountDifference = editedData.amount - IncomeToUpdate.amount;
+                setSum((prevSum: number) => prevSum + amountDifference);
+            }
+
             setSuccess(true)
             setSuccessData(data?.message)
             setEdit(false)
@@ -238,6 +254,7 @@ export default function Income() {
             setSuccess(true)
             setSuccessData(data?.message)
             setAllIncomes(allIncomes.filter((e:any) => e.id !== data?.deletedIncome?.id))
+            setSum((prevSum: number) => prevSum - data?.deletedIncome?.amount);
             setDeletes(false)
     
         } catch (error: any) {
@@ -257,9 +274,6 @@ export default function Income() {
             });
 
             const data = await response.json();
-            if(data){
-                setIsLoading(false)
-            }
 
             if (!response.ok) {
                 if(data && data?.error === 'No incomes found for this user'){
@@ -269,11 +283,14 @@ export default function Income() {
                 setErrorData(data?.error || "An error occurred during getting incomes")
                 return
             }
-            setAllIncomes(data)
+            setAllIncomes(data?.Incomes)
+            setSum(data?.sum)
         } catch (error: any) {
             console.error("Error during getting incomes:", error);
             setError(true)
             setErrorData("An error occurred during fetching incomes")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -292,6 +309,21 @@ export default function Income() {
     }, [])
 
 
+    function formatDate(inputDate: string): string {
+        const date = new Date(inputDate);
+      
+        if (isNaN(date.getTime())) {
+          return "Invalid date input";
+        }
+      
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const year = date.getUTCFullYear();
+      
+        return `${day} / ${month} / ${year}`;
+      }
+
+
     return (
         <HomeLayout>
             <div className='flex flex-col gap-10'>
@@ -306,7 +338,7 @@ export default function Income() {
                         <span className='hidden md:block'>Income</span>
                         </Button>
                 </div>
-                <p className='text-5xl font-semibold text-green-800'>$30000</p>
+                <p className='text-5xl font-semibold text-green-800'>${sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
                     {isLoading ? <Loader/> : <div>
@@ -315,7 +347,7 @@ export default function Income() {
                             <div className='flex justify-between'>
                                 <div className='flex gap-3 items-center'>
                                     <Label className='font-medium text-lg'>{e.category}</Label>
-                                    <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
+                                    <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{formatDate(e.date)}</Label>
                                 </div>
                                 <div className='flex gap-3'>
                                 <button onClick={() => confirmEditIncome(e)}>

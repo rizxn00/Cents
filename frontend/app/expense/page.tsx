@@ -41,6 +41,7 @@ export default function Expense() {
     const [category, setCategory] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [date, setDate] = useState<string>('')
+    const [sum, setSum] = useState<number>(0)
 
     const [success, setSuccess] = useState<boolean>(false)
     const [successData, setSuccessData] = useState<string>('')
@@ -152,11 +153,10 @@ export default function Expense() {
             setSuccess(true)
             setSuccessData(data?.message)
             setAllExpenses([...allExpenses, data?.data])
+            setSum(sum + data?.data?.amount)
             setAddExpense(false)
             resetFormFields()
             setIsSubmitting(false)
-
-
         } catch (error: any) {
             console.error("Error during creating expense:", error);
             setError(true)
@@ -193,6 +193,7 @@ export default function Expense() {
 
         const editedData = {
             ...editData,
+            amount: Number(editData.amount),
             date: new Date(editData.date).toISOString()
         };
         console.log("send data", editedData);
@@ -212,6 +213,18 @@ export default function Expense() {
                 setErrorData(data.error || "An error occurred during updating expense")
                 setIsSubmitting(false)
                 return
+            }
+
+            setAllExpenses((prevExpenses:any) => 
+                prevExpenses.map((e:EditData) => 
+                    e.id === editedData.id ? { ...e, ...editedData } : e
+                )
+            );
+
+            const expenseToUpdate = allExpenses.find((e: EditData) => e.id === editedData.id);
+            if (expenseToUpdate) {
+                const amountDifference = editedData.amount - expenseToUpdate.amount;
+                setSum((prevSum: number) => prevSum + amountDifference);
             }
 
             setSuccess(true)
@@ -249,10 +262,10 @@ export default function Expense() {
                 setErrorData(data.error || "An error occurred during deleting expense")
                 return
             }
-
             setSuccess(true)
             setSuccessData(data?.message)
             setAllExpenses(allExpenses.filter((e: any) => e.id !== data?.deletedExpense?.id))
+            setSum((prevSum: number) => prevSum - data?.deletedExpense?.amount);
             setDeletes(false)
 
         } catch (error: any) {
@@ -272,9 +285,6 @@ export default function Expense() {
             });
 
             const data = await response.json();
-            if (data) {
-                setIsLoading(false)
-            }
 
             if (!response.ok) {
                 if (data && data?.error === 'No expenses found for this user') {
@@ -285,11 +295,14 @@ export default function Expense() {
                 setIsSubmitting(false)
                 return
             }
-            setAllExpenses(data)
+            setAllExpenses(data?.Expenses)
+            setSum(data?.sum)
         } catch (error: any) {
             console.error("Error during getting expenses:", error);
             setError(true)
             setErrorData("An error occurred during fetching expense")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -307,8 +320,19 @@ export default function Expense() {
         getExpenses()
     }, [])
 
-
-
+    function formatDate(inputDate: string): string {
+        const date = new Date(inputDate);
+      
+        if (isNaN(date.getTime())) {
+          return "Invalid date input";
+        }
+      
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const year = date.getUTCFullYear();
+      
+        return `${day} / ${month} / ${year}`;
+      }
 
     return (
         <HomeLayout>
@@ -324,7 +348,7 @@ export default function Expense() {
                         <span className='hidden md:block'>Expense</span>
                     </Button>
                 </div>
-                <p className='text-5xl font-semibold text-red-800'>$50000</p>
+                <p className='text-5xl font-semibold text-red-800'>${sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
                     {isLoading ? <Loader /> : <div>
@@ -333,7 +357,7 @@ export default function Expense() {
                                 <div className='flex justify-between'>
                                     <div className='flex gap-3 items-center'>
                                         <Label className='font-medium text-lg'>{e.category}</Label>
-                                        <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
+                                        <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{formatDate(e.date)}</Label>
                                     </div>
                                     <div className='flex gap-3'>
                                         <button onClick={() => confirmEditExpense(e)}>
