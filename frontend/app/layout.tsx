@@ -1,17 +1,9 @@
 import type { Metadata } from "next";
 import { Unbounded } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import localFont from '@next/font/local'
+import { ThemeProviderWrapper } from "./ThemeProviderWrapper";
 
 const unbounded = Unbounded({ subsets: ['latin'] });
-const circular = localFont({
-  src: [
-    {
-      path: '../assets/circular-std-medium-500.ttf',
-    },
-  ]
-})
 
 export const metadata: Metadata = {
   title: "Cents",
@@ -24,11 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${unbounded.className} bg-neutral-300 dark:bg-black`} suppressHydrationWarning>
-      <ThemeProvider attribute="class" defaultTheme="system">
-          {children}
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={unbounded.className}>
+        <ThemeProviderWrapper>
+          <div className="bg-neutral-300 dark:bg-black">
+            {children}
+          </div>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

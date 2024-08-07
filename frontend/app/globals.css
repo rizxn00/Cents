@@ -1,13 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
-
-
 
 *{
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 @layer utilities {
@@ -15,8 +13,3 @@
     text-wrap: balance;
   }
 }
-
-.customFont{
-  font-family: "Unbounded", sans-serif;
-}
-

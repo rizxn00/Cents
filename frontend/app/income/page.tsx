@@ -10,6 +10,8 @@ import Card from '@/components/ui/Card';
 import HomeLayout from '../home';
 import { SuccessAlert, ErrorAlert } from '@/components/ui/Alerts'
 import { Loader } from '@/components/ui/Loader';
+import { useRouter } from 'next/navigation';
+import withAuth from '@/components/withAuth';
 
 
 interface EditData {
@@ -20,8 +22,9 @@ interface EditData {
     date: string;
 }
 
-export default function Income() {
+function Income() {
 
+    const [currency, setCurrency] = useState<string>('$');
     const [allIncomes, setAllIncomes] = useState<any>([])
 
     const [addIncome, setAddIncome] = useState<boolean>(false)
@@ -43,71 +46,81 @@ export default function Income() {
     const [date, setDate] = useState<string>('')
     const [sum, setSum] = useState<number>(0)
 
-    const [success, setSuccess] = useState<boolean>(false)
-    const [successData, setSuccessData] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
-    const [errorData, setErrorData] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
+    const [error, setError] = useState<string>('')
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
     const income = [
-        "Ad revenue",
-        "Affiliate marketing",
-        "Airbnb or vacation rentals",
-        "Alimony",
-        "Bonuses",
-        "Business profits",
-        "Capital gains",
-        "Child support",
-        "Coaching or tutoring",
-        "Commissions",
-        "Consulting fees",
-        "Disability benefits",
-        "Dividends",
-        "E-book sales",
-        "Farm income",
-        "Freelance earnings",
-        "Gambling winnings",
-        "Gifts",
-        "Grants",
-        "Inheritance",
-        "Insurance payouts",
-        "Interest income",
-        "Investment income",
-        "Jury duty pay",
-        "Lottery winnings",
-        "Merchandise sales",
-        "Military benefits",
-        "Mineral rights",
-        "Online course sales",
-        "Overtime pay",
-        "Parking/garage rentals",
-        "Pension",
-        "Peer-to-peer lending",
-        "Profit sharing",
-        "Rebates and cashback",
-        "Recycling",
-        "Rental income",
-        "Retirement account withdrawals",
-        "Royalties",
-        "Salary",
-        "Sale of assets",
-        "Scholarships",
-        "Self-employment income",
-        "Side gig income",
-        "Social Security benefits",
-        "Sponsorships",
-        "Speaking engagements",
-        "Stock options",
-        "Tax refunds",
-        "Trust fund distributions",
-        "Unemployment benefits",
-        "Wages",
-        "Workshop fees",
-        "Others",
+        {label:"Ad revenue", value:"Ad revenue"},
+        {label:"Affiliate marketing", value:"Affiliate marketing"},
+        {label:"Airbnb or vacation rentals", value:"Airbnb or vacation rentals"},
+        {label:"Alimony", value:"Alimony"},
+        {label:"Bonuses", value:"Bonuses"},
+        {label:"Business profits", value:"Business profits"},
+        {label:"Capital gains", value:"Capital gains"},
+        {label:"Child support", value:"Child support"},
+        {label:"Coaching or tutoring", value:"Coaching or tutoring"},
+        {label:"Commissions", value:"Commissions"},
+        {label:"Consulting fees", value:"Consulting fees"},
+        {label:"Disability benefits", value:"Disability benefits"},
+        {label:"Dividends", value:"Dividends"},
+        {label:"E-book sales", value:"E-book sales"},
+        {label:"Farm income", value:"Farm income"},
+        {label:"Freelance earnings", value:"Freelance earnings"},
+        {label:"Gambling winnings", value:"Gambling winnings"},
+        {label:"Gifts", value:"Gifts"},
+        {label:"Grants", value:"Grants"},
+        {label:"Inheritance", value:"Inheritance"},
+        {label:"Insurance payouts", value:"Insurance payouts"},
+        {label:"Interest income", value:"Interest income"},
+        {label:"Investment income", value:"Investment income"},
+        {label:"Jury duty pay", value:"Jury duty pay"},
+        {label:"Lottery winnings", value:"Lottery winnings"},
+        {label:"Merchandise sales", value:"Merchandise sales"},
+        {label:"Military benefits", value:"Military benefits"},
+        {label:"Mineral rights", value:"Mineral rights"},
+        {label:"Online course sales", value:"Online course sales"},
+        {label:"Overtime pay", value:"Overtime pay"},
+        {label:"Parking/garage rentals", value:"Parking/garage rentals"},
+        {label:"Pension", value:"Pension"},
+        {label:"Peer-to-peer lending", value:"Peer-to-peer lending"},
+        {label:"Profit sharing", value:"Profit sharing"},
+        {label:"Rebates and cashback", value:"Rebates and cashback"},
+        {label:"Recycling", value:"Recycling"},
+        {label:"Rental income", value:"Rental income"},
+        {label:"Retirement account withdrawals", value:"Retirement account withdrawals"},
+        {label:"Royalties", value:"Royalties"},
+        {label:"Salary", value:"Salary"},
+        {label:"Sale of assets", value:"Sale of assets"},
+        {label:"Scholarships", value:"Scholarships"},
+        {label:"Self-employment income", value:"Self-employment income"},
+        {label:"Side gig income", value:"Side gig income"},
+        {label:"Social Security benefits", value:"Social Security benefits"},
+        {label:"Sponsorships", value:"Sponsorships"},
+        {label:"Speaking engagements", value:"Speaking engagements"},
+        {label:"Stock options", value:"Stock options"},
+        {label:"Tax refunds", value:"Tax refunds"},
+        {label:"Trust fund distributions", value:"Trust fund distributions"},
+        {label:"Unemployment benefits", value:"Unemployment benefits"},
+        {label:"Wages", value:"Wages"},
+        {label:"Workshop fees", value:"Workshop fees"},
+        {label:"Others", value:"Others"},
     ];
 
+    const router = useRouter()
+
+    function performLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("navigationOpen");
+        localStorage.removeItem("currency");
+    
+        setTimeout(() => {
+            router.push('/auth/signin') 
+        }, 2000);
+    }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -126,6 +139,7 @@ export default function Income() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(incomeData),
             });
@@ -133,24 +147,26 @@ export default function Income() {
             const data = await response.json();
     
             if (!response.ok) {
-                setIsSubmitting(false)
-                setError(true)
-                setErrorData(data.error || "An error occurred during creating income")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during creating income")
                 return
             }
             
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.message)
             setAllIncomes([...allIncomes, data?.data])
             setSum(sum + data?.data?.amount)
             setAddIncome(false)
             resetFormFields()
-            setIsSubmitting(false)
     
         } catch (error: any) {
             console.error("Error during creating income:", error);
-            setError(true)
-            setErrorData("An error occurred during creating income")
+            setError("An error occurred during creating income")
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -192,6 +208,7 @@ export default function Income() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(editedData)
             });
@@ -199,9 +216,12 @@ export default function Income() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(true)
-                setErrorData(data.error || "An error occurred during updating income")
-                setIsSubmitting(false)
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during updating income")
                 return
             }
 
@@ -217,14 +237,13 @@ export default function Income() {
                 setSum((prevSum: number) => prevSum + amountDifference);
             }
 
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.messagee)
             setEdit(false)
-            setIsSubmitting(false)
         } catch (error: any) {
             console.error("Error during updating income:", error);
-            setError(true)
-            setErrorData("An error occurred during updating income")
+            setError("An error occurred during updating income")
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -235,32 +254,39 @@ export default function Income() {
 
     const deleteIncome = async(event: any) => {
         event.preventDefault()
+        setIsSubmitting(true)
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/delete/${deleteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             });
     
             const data = await response.json();
     
             if (!response.ok) {
-                setError(true)
-                setErrorData(data?.error || "An error occurred during deleting Income")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data?.error || "An error occurred during deleting Income")
                 return
             }
             
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.message)
             setAllIncomes(allIncomes.filter((e:any) => e.id !== data?.deletedIncome?.id))
             setSum((prevSum: number) => prevSum - data?.deletedIncome?.amount);
             setDeletes(false)
     
         } catch (error: any) {
             console.error("Error during deleting income:", error);
-            setError(true)
-            setErrorData("An error occurred during deleting income")
+            setError("An error occurred during deleting income")
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -270,25 +296,29 @@ export default function Income() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                if(data && data?.error === 'No incomes found for this user'){
+                if(data && data?.error === 'No expenses found for this user in the current month'){
                     return
                 }
-                setError(true)
-                setErrorData(data?.error || "An error occurred during getting incomes")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data?.error || "An error occurred during getting incomes")
                 return
             }
             setAllIncomes(data?.Incomes)
             setSum(data?.sum)
         } catch (error: any) {
             console.error("Error during getting incomes:", error);
-            setError(true)
-            setErrorData("An error occurred during fetching incomes")
+            setError("An error occurred during fetching incomes")
         } finally {
             setIsLoading(false)
         }
@@ -305,7 +335,15 @@ export default function Income() {
         setToday(todayFormatted);
         setDate(todayFormatted);
 
+        if (typeof window !== 'undefined') {
+            const storedCurrency = localStorage.getItem('currency');
+            if (storedCurrency) {
+              setCurrency(storedCurrency);
+            }
+          }
+
         getIncomes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -320,7 +358,7 @@ export default function Income() {
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const year = date.getUTCFullYear();
       
-        return `${day} / ${month} / ${year}`;
+        return `${day}/${month}/${year}`;
       }
 
 
@@ -338,7 +376,7 @@ export default function Income() {
                         <span className='hidden md:block'>Income</span>
                         </Button>
                 </div>
-                <p className='text-5xl font-semibold text-green-800'>${sum}</p>
+                <p className='text-5xl font-semibold text-green-800'>{currency}{sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
                     {isLoading ? <Loader/> : <div>
@@ -371,7 +409,7 @@ export default function Income() {
                                     </button>
                                 </div>
                             </div>
-                            <div className='text-2xl'>${e.amount}</div>
+                            <div className='text-2xl'>{currency}{e.amount}</div>
                             <Label className='text-xs font-light'>{e.description}</Label>
                         </Card>
                     ))} 
@@ -420,7 +458,7 @@ export default function Income() {
             </Modal>
 
             {/* Delete Income Modal */}
-            <Modal isOpen={deletes} Title='Delete Income' onClose={() => setDeletes(false)} buttonText='Delete' onSubmit={deleteIncome} >
+            <Modal isOpen={deletes} Title='Delete Income' onClose={() => setDeletes(false)} buttonText='Delete' onSubmit={deleteIncome} isLoading={isSubmitting} loadingText='deleting' >
                 <div className='flex gap-3 items-center'>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" className='text-black dark:text-white' fill="none">
@@ -433,9 +471,11 @@ export default function Income() {
                 </div>
             </Modal>
 
-            {success && <SuccessAlert message={successData} onClose={() => setSuccess(false)} />}
-            {error && <ErrorAlert message={errorData} onClose={() => setError(false)} />}
+            {success && success.length > 0 && <SuccessAlert message={success} onClose={() => setSuccess('')} />}
+            {error && error.length > 0 && <ErrorAlert message={error} onClose={() => setError('')} />}
 
         </HomeLayout>
     )
 }
+
+export default withAuth(Income)

@@ -4,7 +4,7 @@ import React, { useState, ReactNode, memo, useEffect } from 'react'
 import Label from './ui/Label'
 import Link from 'next/link';
 import ClickOutside from './ClickOutside';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Tooltip from './ui/Tooltip';
 import Modal from './ui/Modal';
 
@@ -55,6 +55,7 @@ const Navigation: React.FC = () => {
     });
 
     const [logout, setLogout] = useState<boolean>(false)
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
     const pathname = usePathname();
 
@@ -69,6 +70,23 @@ const Navigation: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('navigationOpen', JSON.stringify(open));
     }, [open]);
+
+    const router = useRouter()
+
+    const handleLogout = (event: any) => {
+
+        event.preventDefault()
+        setIsSubmitting(true)
+
+        setTimeout(() => {
+            localStorage.removeItem("token")
+            localStorage.removeItem("id")
+            localStorage.removeItem("navigationOpen")
+            localStorage.removeItem("currency")
+            router.push('/auth/signin')
+            setIsSubmitting(false)
+        }, 2000)
+    }
 
 
     const pages = [
@@ -136,8 +154,8 @@ const Navigation: React.FC = () => {
                 <div className={`mt-5 m-2 flex-1`}>
                     <ul className='flex flex-col gap-2'>
                         <button className='flex justify-center' onClick={() => setOpen(!open)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" className='text-black dark:text-white' fill="none">
-                        <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg></button>
                         {pages.map((item: any) => (
                             <NavItem href={item.href} open={open} icon={item.image} key={item.label} className={pathname.includes(item.href) && 'bg-gray-200 dark:bg-black'}>
@@ -161,53 +179,53 @@ const Navigation: React.FC = () => {
 
             <div className="md:hidden">
                 <div className="fixed top-0 left-0 right-0 z-40 p-3 bg-white/50 dark:bg-black/50 backdrop-blur-sm shadow-md">
-                <input type="checkbox" id="drawer-toggle" className="sr-only peer" />
-                <label htmlFor="drawer-toggle" className="cursor-pointer w-9 h-9 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-9 h-9" viewBox="0 0 24 24" fill="none">
-                        <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </label>
-                <div className="fixed top-0 left-0 z-50 w-64 min-h-screen  transition-transform duration-500 -translate-x-full bg-zinc-100 dark:bg-zinc-950 shadow-lg peer-checked:translate-x-0">
-                <ClickOutside onClick={disableDrawer}>
-                    <div className="px-2 py-4 flex flex-col justify-between h-full">
-                    <button onClick={disableDrawer} className="absolute top-4 right-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-6 h-6" viewBox="0 0 24 24" fill="none">
-                        <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <input type="checkbox" id="drawer-toggle" className="sr-only peer" />
+                    <label htmlFor="drawer-toggle" className="cursor-pointer w-9 h-9 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-9 h-9" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-                    </button>
-                    <div className="mt-10 flex-1">
-                        <ul className="flex flex-col gap-2">
-                        {pages.map((item: any) => (
-                            <NavItem 
-                            href={item.href} 
-                            open={true} 
-                            icon={item.image} 
-                            key={item.label} 
-                            className={pathname.includes(item.href) ? 'bg-gray-200 dark:bg-zinc-900' : ''}
-                            >
-                            <Label className="cursor-pointer select-none">{item.label}</Label>
-                            </NavItem>
-                        ))}
-                        <NavItem onClick={() => setLogout(true)} open={true} icon={
-                            <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-7 h-7" viewBox="0 0 24 24" fill="none">
-                                <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                <path d="M21 12H10M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                    </label>
+                    <div className="fixed top-0 left-0 z-50 w-64 min-h-screen  transition-transform duration-500 -translate-x-full bg-zinc-100 dark:bg-zinc-950 shadow-lg peer-checked:translate-x-0">
+                        <ClickOutside onClick={disableDrawer}>
+                            <div className="px-2 py-4 flex flex-col justify-between h-full">
+                                <button onClick={disableDrawer} className="absolute top-4 right-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                        <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <div className="mt-10 flex-1">
+                                    <ul className="flex flex-col gap-2">
+                                        {pages.map((item: any) => (
+                                            <NavItem
+                                                href={item.href}
+                                                open={true}
+                                                icon={item.image}
+                                                key={item.label}
+                                                className={pathname.includes(item.href) ? 'bg-gray-200 dark:bg-zinc-900' : ''}
+                                            >
+                                                <Label className="cursor-pointer select-none">{item.label}</Label>
+                                            </NavItem>
+                                        ))}
+                                        <NavItem onClick={() => setLogout(true)} open={true} icon={
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-7 h-7" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                    <path d="M21 12H10M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        }>
+                                            <Label className="cursor-pointer select-none">Logout</Label>
+                                        </NavItem>
+                                    </ul>
+                                </div>
                             </div>
-                        }>
-                            <Label className="cursor-pointer select-none">Logout</Label>
-                        </NavItem>
-                        </ul>
+                        </ClickOutside>
                     </div>
-                    </div>
-                </ClickOutside>
                 </div>
             </div>
-            </div>
 
-            <Modal isOpen={logout} Title='Logout' onClose={() => setLogout(false)} buttonText='Logout'>
+            <Modal isOpen={logout} Title='Logout' onClose={() => setLogout(false)} buttonText='Logout' onSubmit={handleLogout} isLoading={isSubmitting} loadingText='logging out'>
                 <div className='flex gap-3 items-center'>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" className='text-black dark:text-white' fill="none">

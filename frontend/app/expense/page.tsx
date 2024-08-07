@@ -10,6 +10,8 @@ import Select from '@/components/ui/Select'
 import HomeLayout from '../home'
 import { SuccessAlert, ErrorAlert } from '@/components/ui/Alerts'
 import { Loader } from '@/components/ui/Loader'
+import { useRouter } from 'next/navigation'
+import withAuth from '@/components/withAuth'
 
 
 interface EditData {
@@ -20,8 +22,9 @@ interface EditData {
     date: string;
 }
 
-export default function Expense() {
+function Expense() {
 
+    const [currency, setCurrency] = useState<string>('$');
     const [allExpenses, setAllExpenses] = useState<any>([])
 
     const [addExpense, setAddExpense] = useState<boolean>(false)
@@ -43,83 +46,92 @@ export default function Expense() {
     const [date, setDate] = useState<string>('')
     const [sum, setSum] = useState<number>(0)
 
-    const [success, setSuccess] = useState<boolean>(false)
-    const [successData, setSuccessData] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
-    const [errorData, setErrorData] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
+    const [error, setError] = useState<string>('')
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
 
     const expenses = [
-        "Rent/Mortgage",
-        "Property taxes",
-        "Home insurance",
-        "Utilities (electricity, water, gas)",
-        "Maintenance and repairs",
-        "Car payments",
-        "Fuel",
-        "Public transportation",
-        "Vehicle maintenance",
-        "Car insurance",
-        "Groceries",
-        "Dining out",
-        "Food delivery",
-        "Health insurance",
-        "Prescription medications",
-        "Doctor visits",
-        "Dental care",
-        "Vision care",
-        "Clothing",
-        "Personal care (haircuts, cosmetics)",
-        "Gym membership",
-        "Hobbies",
-        "Streaming services",
-        "Movies/concerts",
-        "Sports events",
-        "Tuition",
-        "School supplies",
-        "Books",
-        "Online courses",
-        "Credit card payments",
-        "Student loan payments",
-        "Personal loan payments",
-        "Emergency fund",
-        "Retirement contributions",
-        "Investment accounts",
-        "Life insurance",
-        "Disability insurance",
-        "Renters insurance",
-        "Charitable contributions",
-        "Birthday/holiday gifts",
-        "Vacations",
-        "Business trips",
-        "Food",
-        "Veterinary care",
-        "Grooming",
-        "Phone bill",
-        "Internet service",
-        "Device purchases",
-        "Daycare",
-        "Babysitting",
-        "Legal fees",
-        "Accounting services",
-        "Income tax",
-        "Property tax",
-        "Sales tax",
-        "Magazines",
-        "Software subscriptions",
-        "Membership fees",
-        "Office supplies",
-        "Equipment",
-        "Unexpected expenses",
-        "Fees and fines",
-        "Others",
+        {label: "Rent/Mortgage" , value :"Rent/Mortgage"},
+        {label: "Property taxes" , value :"Property taxes"},
+        {label: "Home insurance" , value :"Home insurance"},
+        {label: "Utilities (electricity, water, gas)" , value :"Utilities (electricity, water, gas)"},
+        {label: "Maintenance and repairs" , value :"Maintenance and repairs"},
+        {label: "Car payments" , value :"Car payments"},
+        {label: "Fuel" , value :"Fuel"},
+        {label: "Public transportation" , value :"Public transportation"},
+        {label: "Vehicle maintenance" , value :"Vehicle maintenance"},
+        {label: "Car insurance" , value :"Car insurance"},
+        {label: "Groceries" , value :"Groceries"},
+        {label: "Dining out" , value :"Dining out"},
+        {label: "Food delivery" , value :"Food delivery"},
+        {label: "Health insurance" , value :"Health insurance"},
+        {label: "Prescription medications" , value :"Prescription medications"},
+        {label: "Doctor visits" , value :"Doctor visits"},
+        {label: "Dental care" , value :"Dental care"},
+        {label: "Vision care" , value :"Vision care"},
+        {label: "Clothing" , value :"Clothing"},
+        {label: "Personal care (haircuts, cosmetics)" , value :"Personal care (haircuts, cosmetics)"},
+        {label: "Gym membership" , value :"Gym membership"},
+        {label: "Hobbies" , value :"Hobbies"},
+        {label: "Streaming services" , value :"Streaming services"},
+        {label: "Movies/concerts" , value :"Movies/concerts"},
+        {label: "Sports events" , value :"Sports events"},
+        {label: "Tuition" , value :"Tuition"},
+        {label: "School supplies" , value :"School supplies"},
+        {label: "Books" , value :"Books"},
+        {label: "Online courses" , value :"Online courses"},
+        {label: "Credit card payments" , value :"Credit card payments"},
+        {label: "Student loan payments" , value :"Student loan payments"},
+        {label: "Personal loan payments" , value :"Personal loan payments"},
+        {label: "Emergency fund" , value :"Emergency fund"},
+        {label: "Retirement contributions" , value :"Retirement contributions"},
+        {label: "Investment accounts" , value :"Investment accounts"},
+        {label: "Life insurance" , value :"Life insurance"},
+        {label: "Disability insurance" , value :"Disability insurance"},
+        {label: "Renters insurance" , value :"Renters insurance"},
+        {label: "Charitable contributions" , value :"Charitable contributions"},
+        {label: "Birthday/holiday gifts" , value :"Birthday/holiday gifts"},
+        {label: "Vacations" , value :"Vacations"},
+        {label: "Business trips" , value :"Business trips"},
+        {label: "Food" , value :"Food"},
+        {label: "Veterinary care" , value :"Veterinary care"},
+        {label: "Grooming" , value :"Grooming"},
+        {label: "Phone bill" , value :"Phone bill"},
+        {label: "Internet service" , value :"Internet service"},
+        {label: "Device purchases" , value :"Device purchases"},
+        {label: "Daycare" , value :"Daycare"},
+        {label: "Babysitting" , value :"Babysitting"},
+        {label: "Legal fees" , value :"Legal fees"},
+        {label: "Accounting services" , value :"Accounting services"},
+        {label: "Income tax" , value :"Income tax"},
+        {label: "Property tax" , value :"Property tax"},
+        {label: "Sales tax" , value :"Sales tax"},
+        {label: "Magazines" , value :"Magazines"},
+        {label: "Software subscriptions" , value :"Software subscriptions"},
+        {label: "Membership fees" , value :"Membership fees"},
+        {label: "Office supplies" , value :"Office supplies"},
+        {label: "Equipment" , value :"Equipment"},
+        {label: "Unexpected expenses" , value :"Unexpected expenses"},
+        {label: "Fees and fines" , value :"Fees and fines"},
+        {label: "Others" , value :"Others"},
     ]
 
+    const router = useRouter()
 
-
+    function performLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("navigationOpen");
+        localStorage.removeItem("currency");
+    
+        setTimeout(() => {
+            router.push('/auth/signin') 
+        }, 2000);
+    }
+    
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setIsSubmitting(true)
@@ -137,6 +149,7 @@ export default function Expense() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(expenseData),
             });
@@ -144,23 +157,25 @@ export default function Expense() {
             const data = await response.json();
 
             if (!response.ok) {
-                setIsSubmitting(false)
-                setError(true)
-                setErrorData(data.error || "An error occurred during creating expense")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during creating expense")
                 return
             }
 
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.message)
             setAllExpenses([...allExpenses, data?.data])
             setSum(sum + data?.data?.amount)
             setAddExpense(false)
             resetFormFields()
-            setIsSubmitting(false)
         } catch (error: any) {
             console.error("Error during creating expense:", error);
-            setError(true)
-            setErrorData("An error occurred during creating expense")
+            setError("An error occurred during creating expense")
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -202,6 +217,7 @@ export default function Expense() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(editedData)
             });
@@ -209,9 +225,12 @@ export default function Expense() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(true)
-                setErrorData(data.error || "An error occurred during updating expense")
-                setIsSubmitting(false)
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during updating expense")
                 return
             }
 
@@ -227,18 +246,15 @@ export default function Expense() {
                 setSum((prevSum: number) => prevSum + amountDifference);
             }
 
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.message)
             setEdit(false)
-            setIsSubmitting(false)
         } catch (error: any) {
             console.error("Error during updating expense:", error);
-            setError(true)
-            setErrorData("An error occurred during updating expense")
+            setError("An error occurred during updating expense")
+        } finally {
+            setIsSubmitting(false)
         }
     }
-
-
 
     const confirmDeleteExpense = (id: string) => {
         setDeletes(true)
@@ -247,31 +263,37 @@ export default function Expense() {
 
     const deleteExpense = async (event: any) => {
         event.preventDefault()
+        setIsSubmitting(true)
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/delete/${deleteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                setError(true)
-                setErrorData(data.error || "An error occurred during deleting expense")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during deleting expense")
                 return
             }
-            setSuccess(true)
-            setSuccessData(data?.message)
+            setSuccess(data?.message)
             setAllExpenses(allExpenses.filter((e: any) => e.id !== data?.deletedExpense?.id))
             setSum((prevSum: number) => prevSum - data?.deletedExpense?.amount);
             setDeletes(false)
 
         } catch (error: any) {
             console.error("Error during deleting expense:", error);
-            setError(true)
-            setErrorData("An error occurred during deleting expense")
+            setError("An error occurred during deleting expense")
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -281,17 +303,23 @@ export default function Expense() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             });
 
             const data = await response.json();
+            console.log(response)
 
             if (!response.ok) {
-                if (data && data?.error === 'No expenses found for this user') {
+                if (data && data?.error === 'No expenses found for this user in the current month') {
                     return
                 }
-                setError(true)
-                setErrorData(data?.error || "An error occurred during getting expenses")
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data?.error || "An error occurred during getting expenses")
                 setIsSubmitting(false)
                 return
             }
@@ -299,8 +327,7 @@ export default function Expense() {
             setSum(data?.sum)
         } catch (error: any) {
             console.error("Error during getting expenses:", error);
-            setError(true)
-            setErrorData("An error occurred during fetching expense")
+            setError("An error occurred during fetching expense")
         } finally {
             setIsLoading(false)
         }
@@ -317,7 +344,15 @@ export default function Expense() {
         setToday(todayFormatted)
         setDate(todayFormatted);
 
+        if (typeof window !== 'undefined') {
+            const storedCurrency = localStorage.getItem('currency');
+            if (storedCurrency) {
+              setCurrency(storedCurrency);
+            }
+          }
+
         getExpenses()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function formatDate(inputDate: string): string {
@@ -331,7 +366,7 @@ export default function Expense() {
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const year = date.getUTCFullYear();
       
-        return `${day} / ${month} / ${year}`;
+        return `${day}/${month}/${year}`;
       }
 
     return (
@@ -348,7 +383,7 @@ export default function Expense() {
                         <span className='hidden md:block'>Expense</span>
                     </Button>
                 </div>
-                <p className='text-5xl font-semibold text-red-800'>${sum}</p>
+                <p className='text-5xl font-semibold text-red-800'>{currency}{sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
                     {isLoading ? <Loader /> : <div>
@@ -381,7 +416,7 @@ export default function Expense() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className='text-lg'>${e.amount}</div>
+                                <div className='text-lg'>{currency}{e.amount}</div>
                                 <Label className='text-xs font-light'>{e.description}</Label>
                             </Card>
                         ))}
@@ -431,7 +466,7 @@ export default function Expense() {
             </Modal>
 
             {/* Delete Expense Modal */}
-            <Modal isOpen={deletes} Title='Delete Expense' onClose={() => setDeletes(false)} buttonText='Delete' onSubmit={deleteExpense}>
+            <Modal isOpen={deletes} Title='Delete Expense' onClose={() => setDeletes(false)} buttonText='Delete' onSubmit={deleteExpense} isLoading={isSubmitting} loadingText='deleting'>
                 <div className='flex gap-3 items-center'>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" className='text-black dark:text-white' fill="none">
@@ -444,8 +479,11 @@ export default function Expense() {
                 </div>
             </Modal>
 
-            {success && <SuccessAlert message={successData} onClose={() => setSuccess(false)} />}
-            {error && <ErrorAlert message={errorData} onClose={() => setError(false)} />}
+            {success && success.length > 0 && <SuccessAlert message={success} onClose={() => setSuccess('')} />}
+            {error && error.length > 0 && <ErrorAlert message={error} onClose={() => setError('')} />}
         </HomeLayout>
     )
 }
+
+
+export default withAuth(Expense)

@@ -1,8 +1,15 @@
+'use client'
+
 import React, { useState, useEffect, useRef } from 'react'
 import ClickOutside from '../ClickOutside';
 
+type Option = {
+    label: string;
+    value: string;
+}
+
 type selectPropType = {
-    options: string[]
+    options: Option[]
     value?:string
     placeholder?: string
     defaultValue?:string
@@ -11,24 +18,24 @@ type selectPropType = {
 
 export default function Select({ options, value, placeholder, defaultValue,onChange}: selectPropType) {
     const [showOptions, setShowOptions] = useState<boolean>(false)
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
+    const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const filtered = options.filter(option =>
-            option.toLowerCase().includes(searchTerm.toLowerCase())
+            option.label.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredOptions(filtered);
     }, [searchTerm, options]);
 
-    const handleOptionClick = (option: string) => {
+    const handleOptionClick = (option: Option) => {
         setSelectedOption(option);
         setShowOptions(false);
         setSearchTerm('');
-        if(onChange) onChange(option);
+        if(onChange) onChange(option.value);
     };
 
     const handleButtonClick = () => {
@@ -42,6 +49,15 @@ export default function Select({ options, value, placeholder, defaultValue,onCha
         setSearchTerm(event.target.value);
     };
 
+    useEffect(() => {
+        if (value) {
+            const option = options.find(opt => opt.value === value);
+            if (option) {
+                setSelectedOption(option);
+            }
+        }
+    }, [value, options]);
+
     return (
         <ClickOutside onClick={() => setShowOptions(false)}>
             <div className="relative">
@@ -54,7 +70,7 @@ export default function Select({ options, value, placeholder, defaultValue,onCha
                     className="relative w-full outline-none cursor-default rounded-md py-3.5 pl-3 text-left text-sm font-light bg-gray-200 dark:bg-zinc-900 focus:border-orange-700 dark:focus:border-orange-700 focus:border"
                 >
                     <span className="block truncate text-black dark:text-white">
-                        {selectedOption || placeholder || defaultValue || value}
+                        {selectedOption ? selectedOption.label : (placeholder || defaultValue || value)}
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -75,14 +91,14 @@ export default function Select({ options, value, placeholder, defaultValue,onCha
                         />
                         </div>
                         <ul className="max-h-48 overflow-auto py-1 text-base focus:outline-none sm:text-sm">
-                            {filteredOptions.map((option: string) => (
+                        {filteredOptions.map((option: Option) => (
                                 <li
                                     className="relative cursor-pointer select-none py-2 pl-3 pr-9 text-black dark:text-white hover:bg-zinc-200 dark:hover:bg-black"
-                                    key={option}
+                                    key={option.value}
                                     onClick={() => handleOptionClick(option)}
                                 >
                                     <div className="flex items-center">
-                                        <span className="block truncate font-light text-sm">{option}</span>
+                                        <span className="block truncate font-light text-sm">{option.label}</span>
                                     </div>
                                 </li>
                             ))}

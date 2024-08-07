@@ -6,8 +6,6 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import profile from '@/assets/svgs/profileIcon.svg'
 import dprofile from '@/assets/svgs/dprofileIcon.svg'
-import image from '@/assets/images/background_image.png'
-import avatar from '@/assets/svgs/login_illustrartion.svg'
 import HomeLayout from '../home'
 import { ErrorAlert, SuccessAlert } from '@/components/ui/Alerts'
 import { Button } from '@/components/ui/Button'
@@ -15,21 +13,85 @@ import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import Link from 'next/link'
 import { Loader } from '@/components/ui/Loader'
+import { useRouter } from 'next/navigation'
+import withAuth from '@/components/withAuth'
 
 
-export default function Profile() {
+function Profile() {
 
-    const [error, setError] = useState<boolean>(false)
-    const [errorData, setErrorData] = useState<string>('')
+    const [currency, setCurrency] = useState<string>('')
+
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
     const [edit, setEdit] = useState<boolean>(false)
 
-    const [username, setUsername] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [income, setIncome] = useState<number>(0)
-    const [expense, setExpense] = useState<number>(0)
-    const [savings, setSavings] = useState<number>(0)
+    const [data, setData] = useState<any>([])
+    const [overview, setOverView] = useState<any>([])
+    const [editData, setEditData] = useState<any>(data)
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+    const router = useRouter()
+
+    function performLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("navigationOpen");
+        localStorage.removeItem("currency");
+    
+        setTimeout(() => {
+            router.push('/auth/signin') 
+        }, 2000);
+    }
+
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string } }) => {
+        const { name, value } = e.target;
+        setEditData((prev: any) => ({ ...prev, [name]: value }));
+    };
+
+    const editProfile = async (event: any) => {
+        event.preventDefault()
+        setIsSubmitting(true)
+
+        const editedData = {
+            id: localStorage.getItem('id'),
+            ...editData,
+        };
+        console.log("send data", editedData);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/profile/updateprofile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(editedData)
+            });
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(data.error || "An error occurred during updating expense")
+                return
+            }
+
+            setEdit(false)
+            setData(data?.data)
+            setSuccess(data?.message)
+        } catch (error: any) {
+            console.error("Error during updating expense:", error);
+            setError("An error occurred during updating expense")
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
 
     const getData = async () => {
         try {
@@ -38,12 +100,14 @@ export default function Profile() {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }),
-                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/shared/getprofile/${localStorage.getItem("id")}`, {
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/profile/getprofile/${localStorage.getItem("id")}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                 })
             ])
@@ -54,36 +118,53 @@ export default function Profile() {
             console.log(profile)
 
             if (!overviewResponse.ok) {
-                setError(true)
-                setErrorData(overview?.error || "An error occurred during getting overview")
+                 if(overviewResponse.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(overview?.error || "An error occurred during getting overview")
                 return
             }
 
             if (!profileResponse.ok) {
-                setError(true)
-                setErrorData(profile?.error || "An error occurred during getting profile data")
+                 if(profileResponse.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
+                setError(profile?.error || "An error occurred during getting profile data")
                 return
             }
 
-            setUsername(profile?.data.username)
-            setEmail(profile?.data.email)
-            setIncome(overview?.TotalIncome)
-            setExpense(overview?.TotalExpense)
-            setSavings(overview?.Balance)
-
+            setData(profile?.data)
+            setOverView(overview)
 
         } catch (error: any) {
             console.error("Error during getting data:", error);
-            setError(true)
-            setErrorData("An error occurred during fetching data")
+            setError("An error occurred during fetching data")
         } finally {
             setIsLoading(false)
         }
     }
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedCurrency = localStorage.getItem('currency');
+            if (storedCurrency) {
+                setCurrency(storedCurrency);
+            }
+            else {
+                setTimeout(() => {
+                    alert("Please choose a curreny")
+                }, 1000);
+                router.push('/settings')
+            }
+        }
+
         getData()
-    }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router])
 
 
 
@@ -99,55 +180,60 @@ export default function Profile() {
                                 <path d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                             </svg></Button>
                         </div>
-                        <div className='flex flex-col md:grid grid-cols-2 gap-5'>
-                            <div className='col-span-2 flex items-center justify-center mb-12'>
-                                <Image src={profile} alt='profile' className='dark:hidden' />
-                                <Image src={dprofile} alt='profile' className='hidden dark:block' />
-                                {/* <Image className="inline-block h-10 w-10 rounded-full ring-2 ring-white" width={10} height={10} src={image} alt=""/> */}
+                        <div className='col-span-2 flex items-center justify-center mb-12'>
+                            <Image src={profile} alt='profile' className='dark:hidden' />
+                            <Image src={dprofile} alt='profile' className='hidden dark:block' />
+                        </div>
+                        <div className='flex flex-col md:grid grid-cols-3 gap-5'>
+                            <div className='flex gap-2 items-center'>
+                                <Label>Username:</Label>
+                                <Label className='text-xl'>{data?.username}</Label>
                             </div>
                             <div className='flex gap-2 items-center'>
-                                <Label>Name:</Label>
-                                <Label className='text-xl'>{username}</Label>
+                                <Label>Full name:</Label>
+                                <Label className='text-xl'>{data?.name}</Label>
                             </div>
                             <div className='flex gap-2 items-center'>
                                 <Label>Email:</Label>
-                                <Label className='text-xl'>{email}</Label>
+                                <Label className='text-xl'>{data?.email}</Label>
                             </div>
-                            <div className='col-span-2 gap-5 lg:gap-2 flex flex-col lg:grid grid-cols-3'>
-                                <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
-                                    <div className='flex gap-2 items-center'>
-                                        <Label>Total Income:</Label>
-                                        <p className='text-green-600 text-xl'>{income}</p>
-                                    </div>
-                                </Card>
-                                <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
-                                    <div className='flex gap-2 items-center'>
-                                        <Label>Total Expenses:</Label>
-                                        <p className='text-red-600 text-xl'>{expense}</p>
-                                    </div>
-                                </Card>
-                                <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
-                                    <div className='flex gap-2 items-center'>
-                                        <Label>Total Savings:</Label>
-                                        <p className='text-orange-600 text-xl'>{savings}</p>
-                                    </div>
-                                </Card>
-                            </div>
+                        </div>
+                        <div className='col-span-2 gap-5 lg:gap-2 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 mt-5'>
+                            <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
+                                <div className='flex gap-2 items-center'>
+                                    <Label>Total Income:</Label>
+                                    <p className='text-green-600 text-xl'>{currency}{overview?.TotalIncome}</p>
+                                </div>
+                            </Card>
+                            <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
+                                <div className='flex gap-2 items-center'>
+                                    <Label>Total Expenses:</Label>
+                                    <p className='text-red-600 text-xl'>{currency}{overview?.TotalExpense}</p>
+                                </div>
+                            </Card>
+                            <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
+                                <div className='flex gap-2 items-center'>
+                                    <Label>Total Savings:</Label>
+                                    <p className='text-blue-600 text-xl'>{currency}{overview?.Balance}</p>
+                                </div>
+                            </Card>
+                            <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
+                                <div className='flex gap-2 items-center'>
+                                    <Label>Total Transcations:</Label>
+                                    <p className='text-orange-600 text-xl'>{overview?.Transcation}</p>
+                                </div>
+                            </Card>
                         </div>
                     </Card>
 
-                    <Modal Title='Edit' isOpen={edit} onClose={() => setEdit(false)} buttonText='Save'>
-                        <div>
-                            <form action="" className="flex flex-col gap-5">
-                                <div className="flex flex-col gap-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input type="text" name="name" value='John Doe' />
-                                </div>
-                                <div className="flex flex-col gap-1">
-                                    <Label htmlFor='email'>Email</Label>
-                                    <Input type="email" id='email' value='john@email.com' />
-                                </div>
-                            </form>
+                    <Modal Title='Edit' isOpen={edit} onClose={() => setEdit(false)} buttonText='Save' onSubmit={editProfile} isLoading={isSubmitting} loadingText='saving'>
+                        <div className="flex flex-col gap-1">
+                            <Label htmlFor="username">Username</Label>
+                            <Input type="text" name="username" id="username" defaultValue={data?.username} onChange={handleEditChange} />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <Label htmlFor="name">Name</Label>
+                            <Input type="text" name="name" id="name" defaultValue={data?.name} onChange={handleEditChange} />
                         </div>
                         <Link href={'profile/changepassword'}>
                             <div className='mt-2 flex justify-end'>
@@ -158,7 +244,10 @@ export default function Profile() {
                 </div>
 
             }
-            {error && <ErrorAlert message={errorData} onClose={() => setError(false)} />}
+            {success && success.length > 0 && <SuccessAlert message={success} onClose={() => setSuccess('')} />}
+            {error && error.length > 0 && <ErrorAlert message={error} onClose={() => setError('')} />}
         </HomeLayout>
     )
 }
+
+export default withAuth(Profile)

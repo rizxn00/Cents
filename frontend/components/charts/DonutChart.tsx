@@ -1,82 +1,104 @@
-import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  Title,
-} from 'chart.js';
-import { Unbounded } from 'next/font/google';
+import { PieTooltipProps, ResponsivePie } from '@nivo/pie';
+import { FC, useEffect, useState } from 'react';
+import { Loader } from '../ui/Loader';
 
-const unbounded = Unbounded({ subsets: ['latin'] });
+const DonutChart: FC = () => {
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
+    const [data, setData] = useState<[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [currency, setCurrency] = useState<string>('$');
 
-interface DonutChartProps {
-  data?: {
-    labels: string[];
-    values: number[];
-  };
-}
+    const getData = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/shared/dashboard/donutchart/${localStorage.getItem("id")}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
 
-const expenseData = {
-    labels: [
-      "Rent/Mortgage", "Property taxes", "Home insurance", "Utilities (electricity, water, gas)",
-    ],
-    values: Array(4).fill(1), 
-  };
+            const data = await response.json();
 
+            if (!response.ok) {
+                return;
+            }
 
-const DonutChart: React.FC<DonutChartProps> = ({}) => {
-  const chartData = {
-    labels: expenseData.labels,
-    datasets: [
-      {
-        label: 'Expense Distribution',
-        data: expenseData.values,
-        backgroundColor: [
-          '#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF', '#FF6384', '#36A2EB',
-          
-        ],
-        borderColor:'transparent',
-        spacing: 9, 
-        borderRadius: 6,
-      },
-    ],
-  };
+            setData(data);
 
-  const options = {
-    cutout: '30%',
-    aspectRatio: 1,        
-    plugins: {
-      legend: {
-        display:true,
-        position: 'bottom' as const,
-        labels: {
-          usePointStyle: true,
-          pointStyle: 'circle',
-          boxWidth: 8, 
-          boxHeight: 8, 
-          padding: 12,
-          // todo font
-          font: {
-            
+        } catch (error: any) {
+            console.error("Error during getting donut chart data:", error);
+
+        } finally {
+            setIsLoading(false);
         }
-          }
-      },
-      title: {
-        display: true,
-        text: 'Expense Distribution',
-      },
-    },
-  };
+    }
 
-  return <Doughnut className='customFont' data={chartData} options={options} />;
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedCurrency = localStorage.getItem('currency');
+            if (storedCurrency) {
+              setCurrency(storedCurrency);
+            }
+          }
+        getData();
+    }, []);
+
+    return (
+        <>
+            {isLoading ? <Loader /> :
+                <div style={{ height: 400 }} className="text-sm text-black dark:text-white">
+                    <ResponsivePie
+                        data={data}
+                        margin={{ top: 40, right: 40, bottom: 100, left: 80 }}
+                        innerRadius={0.5}
+                        padAngle={0.7}
+                        cornerRadius={3}
+                        activeOuterRadiusOffset={8}
+                        colors={{ scheme: 'accent' }}
+                        borderWidth={1}
+                        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                        arcLinkLabelsSkipAngle={10}
+                        arcLinkLabelsTextColor="currentColor"
+                        arcLabelsRadiusOffset={0.6}
+                        arcLabelsSkipAngle={10}
+                        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+                        enableArcLabels={false}
+                        legends={[
+                            {
+                                anchor: 'bottom-right',
+                                direction: 'column',
+                                justify: false,
+                                translateX: 50,
+                                translateY: 90,
+                                itemsSpacing: 10,
+                                itemWidth: 120,
+                                itemHeight: 20,
+                                itemTextColor: 'currentColor',
+                                itemDirection: 'left-to-right',
+                                symbolSize: 12,
+                                symbolShape: 'circle',
+                                effects: [
+                                    {
+                                        on: 'hover',
+                                        style: {
+                                            itemTextColor: '#000'
+                                        }
+                                    }
+                                ]
+                            }
+                        ]}
+                        tooltip={({ datum }: PieTooltipProps<any>) => (
+                            <div className="bg-zinc-100 text-black dark:bg-zinc-900 dark:text-white text-xs p-2 rounded-lg">
+                                <strong>{datum.id}</strong>: {currency}{datum.value}
+                            </div>
+                        )}
+                        role="img"
+                    />
+                </div>
+            }
+        </>
+    );
 };
 
 export default DonutChart;
-
-
-
-
