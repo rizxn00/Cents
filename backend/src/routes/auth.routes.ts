@@ -6,6 +6,7 @@ const authController = new AuthController()
 
 router.post('/signup', authController.registerUser)
 router.post('/signin', authController.loginUser)
+router.post('/change-password', authController.changePassword)
 
 
 export default router

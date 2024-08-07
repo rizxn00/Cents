@@ -16,6 +16,8 @@ export async function initializeDatabase() {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       email TEXT UNIQUE NOT NULL,
       username TEXT UNIQUE NOT NULL,
+      name TEXT,
+      currency TEXT,
       onboarding BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

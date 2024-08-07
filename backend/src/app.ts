@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth.routes'
 import expenseRoutes from './routes/expense.routes'
 import incomeRoutes from './routes/income.routes'
+import profileRoutes from './routes/profile.routes'
 import sharedRoutes from './routes/shared.routes'
 
 dotenv.config();
@@ -15,7 +16,7 @@ const port = process.env.PORT || 8000;
 
 app.use(cors ({
   origin:[process.env.ORIGIN || ''],
-  methods:['GET','POST', 'DELETE'],
+  methods:['GET','POST', 'DELETE', 'PUT'],
   credentials:true
 }))
 
@@ -33,6 +34,7 @@ app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/expenses', expenseRoutes)
 app.use('/api/incomes', incomeRoutes)
+app.use('/api/profile', profileRoutes)
 app.use('/api/shared', sharedRoutes)
 
 export default app

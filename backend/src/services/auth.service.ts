@@ -1,5 +1,7 @@
 import { supabase } from '../config/supabase'
-import { Auth } from '../models/auth.model'
+import jwt from 'jsonwebtoken';
+
+const SECRET_KEY = process.env.SECRET_KEY || '';
 
 export class AuthService {
     async registerUser(email: string, password: string, username: string) {
@@ -48,6 +50,40 @@ export class AuthService {
         if (error) {
             return { error };
         }
-        return { data };
+
+        const {data: profileData, error: profileError} = await supabase
+        .from("profiles")
+        .select("onboarding, currency")
+        .eq("email", email)
+
+        const token = jwt.sign({ userId: data.user.id }, SECRET_KEY, {
+            expiresIn: '2 days',
+        });
+
+        return { data, profileData, token };
+    }
+
+    async changePassword(userId: string, currentPassword: string, newPassword: string) {
+        try {
+            const { data: user, error: getUserError } = await supabase.auth.getUser(userId);
+            
+            if (getUserError) throw getUserError;
+
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email: user.user.email!,
+                password: currentPassword,
+            });
+
+            if (signInError) throw new Error('Current password is incorrect');
+
+            const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+
+            if (error) throw error;
+
+            return { message: "Password changed successfully" };
+        } catch (error: any) {
+            console.error('Error in change password service:', error);
+            throw new Error(error.message || 'Failed to change password');
+        }
     }
 }

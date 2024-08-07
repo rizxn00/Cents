@@ -45,4 +45,20 @@ export class AuthController {
             res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    async changePassword(req: Request, res: Response) {
+        try {
+            const { id, currentPassword, newPassword } = req.body;
+
+            if (!id || !currentPassword || !newPassword) {
+                return res.status(400).json({ error: 'Missing required fields' });
+            }
+
+            const result = await authService.changePassword(id, currentPassword, newPassword);
+            res.status(200).json(result);
+        } catch (error: any) {
+            console.error('Error in auth controller:', error);
+            res.status(500).json({ error: error.message || 'Internal server error' });
+        }
+    }
 }
