@@ -42,7 +42,7 @@ export class ExpenseController {
 
             const Expenses = await expenseService.getMonthlyExpenses(userId);
 
-            const TotalExpense = Expenses.reduce((acc, curr) => acc + curr.amount, 0);
+            const TotalExpense = Expenses.reduce((acc: any, curr: any) => acc + curr.amount, 0);
 
             res.status(201).json({"Expenses": Expenses, "sum": TotalExpense});
         } catch (error) {
