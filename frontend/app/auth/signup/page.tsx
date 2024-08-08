@@ -60,7 +60,7 @@ export default function SignUp() {
     return (
         <div className='min-h-screen h-full flex justify-center items-center'>
             <Image src={background} alt='background' className='absolute w-full min-h-screen h-full' />
-            <div className='flex flex-col bg-white dark:bg-zinc-950 z-10 items-center pt-16 pb-10 gap-5 transition-all shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl w-full max-w-[90%] md:max-w-lg lg:max-w-xl'>
+            <div className='flex flex-col bg-zinc-100 dark:bg-zinc-950 z-10 items-center pt-16 pb-10 gap-5 transition-all shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl w-full max-w-[90%] md:max-w-lg lg:max-w-xl'>
                 <div className='flex justify-center'>
                     <Image src={Logo} alt="logo" priority className="w-16 h-auto invert dark:invert-0" />
                 </div>

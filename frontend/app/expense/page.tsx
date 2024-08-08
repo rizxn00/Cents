@@ -12,6 +12,7 @@ import { SuccessAlert, ErrorAlert } from '@/components/ui/Alerts'
 import { Loader } from '@/components/ui/Loader'
 import { useRouter } from 'next/navigation'
 import withAuth from '@/components/withAuth'
+import { expenses } from '@/data/expense_data'
 
 
 interface EditData {
@@ -51,73 +52,6 @@ function Expense() {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-
-
-    const expenses = [
-        {label: "Rent/Mortgage" , value :"Rent/Mortgage"},
-        {label: "Property taxes" , value :"Property taxes"},
-        {label: "Home insurance" , value :"Home insurance"},
-        {label: "Utilities (electricity, water, gas)" , value :"Utilities (electricity, water, gas)"},
-        {label: "Maintenance and repairs" , value :"Maintenance and repairs"},
-        {label: "Car payments" , value :"Car payments"},
-        {label: "Fuel" , value :"Fuel"},
-        {label: "Public transportation" , value :"Public transportation"},
-        {label: "Vehicle maintenance" , value :"Vehicle maintenance"},
-        {label: "Car insurance" , value :"Car insurance"},
-        {label: "Groceries" , value :"Groceries"},
-        {label: "Dining out" , value :"Dining out"},
-        {label: "Food delivery" , value :"Food delivery"},
-        {label: "Health insurance" , value :"Health insurance"},
-        {label: "Prescription medications" , value :"Prescription medications"},
-        {label: "Doctor visits" , value :"Doctor visits"},
-        {label: "Dental care" , value :"Dental care"},
-        {label: "Vision care" , value :"Vision care"},
-        {label: "Clothing" , value :"Clothing"},
-        {label: "Personal care (haircuts, cosmetics)" , value :"Personal care (haircuts, cosmetics)"},
-        {label: "Gym membership" , value :"Gym membership"},
-        {label: "Hobbies" , value :"Hobbies"},
-        {label: "Streaming services" , value :"Streaming services"},
-        {label: "Movies/concerts" , value :"Movies/concerts"},
-        {label: "Sports events" , value :"Sports events"},
-        {label: "Tuition" , value :"Tuition"},
-        {label: "School supplies" , value :"School supplies"},
-        {label: "Books" , value :"Books"},
-        {label: "Online courses" , value :"Online courses"},
-        {label: "Credit card payments" , value :"Credit card payments"},
-        {label: "Student loan payments" , value :"Student loan payments"},
-        {label: "Personal loan payments" , value :"Personal loan payments"},
-        {label: "Emergency fund" , value :"Emergency fund"},
-        {label: "Retirement contributions" , value :"Retirement contributions"},
-        {label: "Investment accounts" , value :"Investment accounts"},
-        {label: "Life insurance" , value :"Life insurance"},
-        {label: "Disability insurance" , value :"Disability insurance"},
-        {label: "Renters insurance" , value :"Renters insurance"},
-        {label: "Charitable contributions" , value :"Charitable contributions"},
-        {label: "Birthday/holiday gifts" , value :"Birthday/holiday gifts"},
-        {label: "Vacations" , value :"Vacations"},
-        {label: "Business trips" , value :"Business trips"},
-        {label: "Food" , value :"Food"},
-        {label: "Veterinary care" , value :"Veterinary care"},
-        {label: "Grooming" , value :"Grooming"},
-        {label: "Phone bill" , value :"Phone bill"},
-        {label: "Internet service" , value :"Internet service"},
-        {label: "Device purchases" , value :"Device purchases"},
-        {label: "Daycare" , value :"Daycare"},
-        {label: "Babysitting" , value :"Babysitting"},
-        {label: "Legal fees" , value :"Legal fees"},
-        {label: "Accounting services" , value :"Accounting services"},
-        {label: "Income tax" , value :"Income tax"},
-        {label: "Property tax" , value :"Property tax"},
-        {label: "Sales tax" , value :"Sales tax"},
-        {label: "Magazines" , value :"Magazines"},
-        {label: "Software subscriptions" , value :"Software subscriptions"},
-        {label: "Membership fees" , value :"Membership fees"},
-        {label: "Office supplies" , value :"Office supplies"},
-        {label: "Equipment" , value :"Equipment"},
-        {label: "Unexpected expenses" , value :"Unexpected expenses"},
-        {label: "Fees and fines" , value :"Fees and fines"},
-        {label: "Others" , value :"Others"},
-    ]
 
     const router = useRouter()
 

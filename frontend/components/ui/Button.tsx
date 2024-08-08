@@ -5,14 +5,16 @@ type buttonType = {
     className?: string;
     type: any;
     onClick?: any;
+    disabled?: boolean
 };
 
-export function Button({ children, className, type, onClick }: buttonType) {
+export function Button({ children, className, type, onClick, disabled }: buttonType) {
 
     return (
         <button
             type={type}
             onClick={onClick}
+            disabled={disabled}
             className={`bg-orange-800 hover:bg-orange-700 transition-all text-white p-2 rounded ${className}}`}
         >
             {children}

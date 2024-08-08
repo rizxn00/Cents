@@ -2,10 +2,11 @@
 
 import HomeLayout from "@/app/home"
 import { ErrorAlert, SuccessAlert } from "@/components/ui/Alerts"
-import { Button, LoadingButton } from "@/components/ui/Button"
+import { Button } from "@/components/ui/Button"
 import Card from "@/components/ui/Card"
 import Input from "@/components/ui/Input"
 import Label from "@/components/ui/Label"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function ChangePassword() {
@@ -16,6 +17,19 @@ export default function ChangePassword() {
 
     const [success, setSuccess] = useState<string>('')
     const [error, setError] = useState<string>('')
+
+    const router = useRouter()
+
+    function performLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("navigationOpen");
+        localStorage.removeItem("currency");
+    
+        setTimeout(() => {
+            router.push('/auth/signin') 
+        }, 2000);
+    }
 
     const changePassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -31,7 +45,7 @@ export default function ChangePassword() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')?.trim()}`
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(profileData)
             });
@@ -39,6 +53,11 @@ export default function ChangePassword() {
             const data = await response.json();
     
             if (!response.ok) {
+                if(response.statusText === 'Unauthorized') {
+                    setError('Unauthorized')
+                    performLogout()
+                    return
+                }
                 console.error(data.error || "An error occurred while changing password");
                 setError(data.message)
             }
@@ -69,7 +88,7 @@ export default function ChangePassword() {
                     {!isSubmitting ? 
                     <Button type='submit'>Submit</Button>
                     :
-                    <LoadingButton type='button'>submitting</LoadingButton>}
+                    <Button type='button' disabled>submitting.....</Button>}
                 </form>
             </Card>
             {success && success.length > 0 && <SuccessAlert message={success} onClose={() => setSuccess('')} />}

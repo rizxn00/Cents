@@ -11,6 +11,7 @@ import { ErrorAlert, SuccessAlert } from '@/components/ui/Alerts';
 import { Loader } from '@/components/ui/Loader';
 import { useRouter } from 'next/navigation';
 import withAuth from '@/components/withAuth';
+import { currencies } from '@/data/currency_data'
 
 function Settings() {
 
@@ -215,28 +216,6 @@ function Settings() {
     useEffect(() => {
         getCurrency();
     }, [getCurrency])
-
-    const currencies = [
-        { label: 'AUD A$', value: 'A$' },
-        { label: 'BRL R$', value: 'R$' },
-        { label: 'CAD C$', value: 'C$' },
-        { label: 'CHF CHF', value: 'CHF' },
-        { label: 'CNY ¥', value: '¥' },
-        { label: 'EUR €', value: '€' },
-        { label: 'GBP £', value: '£' },
-        { label: 'HKD HK$', value: 'HK$' },
-        { label: 'INR ₹', value: '₹' },
-        { label: 'JPY ¥', value: '¥' },
-        { label: 'KRW ₩', value: '₩' },
-        { label: 'NZD NZ$', value: 'NZ$' },
-        { label: 'RUB ₽', value: '₽' },
-        { label: 'SAR ر.س', value: 'ر.س' },
-        { label: 'SEK kr', value: 'kr' },
-        { label: 'SGD S$', value: 'S$' },
-        { label: 'TRY ₺', value: '₺' },
-        { label: 'USD $', value: '$' },
-        { label: 'ZAR R', value: 'R' },
-    ]
 
     return (
         <HomeLayout>

@@ -6,20 +6,21 @@ import Image from "next/image";
 import Link from 'next/link';
 import Logo from '@/assets/images/cents.png'
 import mockup from '@/assets/images/mockup.png'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import dashboard from '@/assets/images/dashboard.png'
 import charts from '@/assets/images/charts.png'
 import expense from '@/assets/images/expense.png'
 import income from '@/assets/images/income.png'
 import settings from '@/assets/images/settings.png'
 import categories from '@/assets/images/categories.png'
+import ClickOutside from "@/components/ClickOutside";
 
 
 export default function Home() {
 
   useEffect(() => {
-    const handleFeatureScroll = () => {
-      const featureItems = document.querySelectorAll('.feature-item');
+    const handleFadeUp = () => {
+      const featureItems = document.querySelectorAll('.fadeup');
       featureItems.forEach((item) => {
         const rect = item.getBoundingClientRect();
         const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
@@ -29,7 +30,7 @@ export default function Home() {
       });
     };
 
-    const handleDeailsScroll = () => {
+    const handleSlideRight = () => {
       const featureItems = document.querySelectorAll('.slideright');
       featureItems.forEach((item) => {
         const rect = item.getBoundingClientRect();
@@ -40,7 +41,7 @@ export default function Home() {
       });
     };
 
-    const handleMockupScroll = () => {
+    const handleSlideLeft = () => {
       const featureItems = document.querySelectorAll('.slideleft');
       featureItems.forEach((item) => {
         const rect = item.getBoundingClientRect();
@@ -51,20 +52,28 @@ export default function Home() {
       });
     };
 
-    window.addEventListener('scroll', handleFeatureScroll);
-    window.addEventListener('scroll', handleDeailsScroll);
-    window.addEventListener('scroll', handleMockupScroll);
-    handleFeatureScroll();
-    handleDeailsScroll();
-    handleMockupScroll();
+    window.addEventListener('scroll', handleFadeUp);
+    window.addEventListener('scroll', handleSlideRight);
+    window.addEventListener('scroll', handleSlideLeft);
+    handleFadeUp();
+    handleSlideRight();
+    handleSlideLeft();
 
 
     return () => {
-      window.removeEventListener('scroll', handleFeatureScroll);
-      window.removeEventListener('scroll', handleDeailsScroll);
-      window.removeEventListener('scroll', handleMockupScroll);
+      window.removeEventListener('scroll', handleFadeUp);
+      window.removeEventListener('scroll', handleSlideRight);
+      window.removeEventListener('scroll', handleSlideLeft);
     }
   }, []);
+
+  function disableDrawer() {
+    const inputElement = document.getElementById('drawer-toggle') as HTMLInputElement
+    if (inputElement) {
+        inputElement.checked = false;
+    }
+}
+
 
 
   return (
@@ -73,17 +82,44 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 right-0 flex items-center md:hidden">
-              <button type="button" className="relative inline-flex items-center justify-center rounded-md p-2 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
-                <span className="absolute -inset-0.5"></span>
-                <span className="sr-only">Open main menu</span>
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-
-                <svg className="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+            <div className="md:hidden">
+                <div className="fixed top-0 right-0 z-40 p-3">
+                    <input type="checkbox" id="drawer-toggle" className="sr-only peer" />
+                    <label htmlFor="drawer-toggle" className="cursor-pointer w-9 h-9 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-9 h-9" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </label>
+                    <div className="fixed top-0 right-0 z-50 w-80 min-h-screen transition-transform duration-500 translate-x-full  bg-neutral-300 dark:bg-zinc-950 shadow-xl peer-checked:translate-x-0">
+                        <ClickOutside onClick={disableDrawer}>
+                            <div className="px-2 py-4 flex flex-col justify-between h-full">
+                                <button onClick={disableDrawer} className="absolute top-4 right-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="text-black dark:text-white w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                        <path d="M19.0005 4.99988L5.00045 18.9999M5.00045 4.99988L19.0005 18.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <div className="mt-10 flex-1">
+                                    <ul className="flex flex-col space-y-5">
+                                      <a href="#home" className="w-full flex justify-center p-2 rounded-lg" onClick={disableDrawer}>
+                                        <Label className='text-sm cursor-pointer'>Home</Label>
+                                      </a>
+                                      <a href="#about" className="w-full flex justify-center p-2 rounded-lg" onClick={disableDrawer}>
+                                        <Label className='text-sm cursor-pointer'>About</Label>
+                                      </a>
+                                      <a href="#contact"  className="w-full flex justify-center p-2 rounded-lg" onClick={disableDrawer}>
+                                        <Label className='text-sm cursor-pointer'>Contact</Label>
+                                      </a>
+                                      <Link href={'auth/signin'} className="w-full flex justify-center rounded-lg">
+                                        <button type="button" className='text-sm w-full text-white p-2 rounded-md bg-orange-800'>Login</button>
+                                      </Link>
+                                    </ul>
+                                </div>
+                            </div>
+                        </ClickOutside>
+                    </div>
+                </div>
+            </div>
             </div>
             <div className='flex items-center'>
               <a href="#home">
@@ -161,29 +197,29 @@ export default function Home() {
               <div id="features" className="slideleft relative overflow-hidden rounded-xl border border-neutral-950 aspect-video shadow-lg group">
                 <Image src={settings} alt="Expense" className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                 <div className="absolute inset-0  bg-gradient-to-b from-black/75 to-transparent"></div>
-                <h3 className="absolute top-4 left-4 text-sm opacity-80 font-semibold text-white">Import/Upload</h3>
+                <h3 className="absolute top-4 left-4 text-sm opacity-80 font-semibold text-white">Import/Upload Data</h3>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-16 ">
+        <section id="about" className="py-16 px-5 ">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Why Choose Cents?</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 ">
-              <div className="p-6 rounded-lg shadow-md slideright">
+              <div className="p-6 rounded-lg shadow-md fadeup">
                 <h3 className="text-xl font-medium mb-4">Manage Your Finances</h3>
                 <p className="font-light text-sm">Effortlessly manage and categorize your expenses and income with an intuitive, user-friendly interface that simplifies financial tracking.</p>
               </div>
-              <div className="p-6 rounded-lg shadow-md slideright">
+              <div className="p-6 rounded-lg shadow-md fadeup">
                 <h3 className="text-xl font-medium mb-4">Visualize Spending</h3>
                 <p className="font-light text-sm">Track your expenses with interactive charts and graphs that provide a clear overview of where your money goes each month.</p>
               </div>
-              <div className="p-6 rounded-lg shadow-md slideleft">
+              <div className="p-6 rounded-lg shadow-md fadeup">
                 <h3 className="text-xl font-medium mb-4">Multi-Currency Support</h3>
                 <p className="font-light text-sm">Manage expenses and income in multiple currencies, ability to change your currency according to your preference.</p>
               </div>
-              <div className="p-6 rounded-lg shadow-md slideleft">
+              <div className="p-6 rounded-lg shadow-md fadeup">
                 <h3 className="text-xl font-medium mb-4">Secure Data</h3>
                 <p className="font-light text-sm">Enjoy peace of mind with robust data encryption and secure storage, ensuring your financial information is always protected.</p>
               </div>
@@ -225,6 +261,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      
     </div>
   );
 }
