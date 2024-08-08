@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
-import { ExpenseService } from '../services/expense.service'
+import { ExpenseService as expense } from '../services/expense.service'
 
-const expenseService = new ExpenseService()
+
+const expenseService = new expense()
 
 export class ExpenseController {
     async createExpense(req: Request, res: Response) {
