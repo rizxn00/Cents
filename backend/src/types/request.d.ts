@@ -1,4 +1,3 @@
-// types/request.d.ts
 import { Request } from 'express';
 
 interface User {
