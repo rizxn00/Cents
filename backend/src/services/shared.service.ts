@@ -357,7 +357,7 @@ export class SharedService {
           const incomes: any[] = [];
       
           fs.createReadStream(filePath)
-            .pipe(parse({ columns: header => header.map((column:any) => column.toLowerCase()), skip_empty_lines: true }))
+            .pipe(parse({ columns: header => header.map((column: any) => column.toLowerCase()), skip_empty_lines: true }))
             .on('data', (record) => {
               try {
                 const [day, month, year] = record.date.split('-').map(Number);
@@ -386,7 +386,7 @@ export class SharedService {
             })
             .on('end', async () => {
               try {
-                const upsertRecords = async (table:string, data:any[]) => {
+                const upsertRecords = async (table: string, data: any[]) => {
                   if (data.length > 0) {
                     const { error } = await supabase
                       .from(table)
@@ -407,5 +407,6 @@ export class SharedService {
             })
             .on('error', reject);
         });
-      }
+    }
+    
 }
