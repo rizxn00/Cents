@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import { initializeDatabase } from './utils/initializeDatabase'
 import dotenv from 'dotenv';
 import cors from 'cors'
@@ -31,6 +31,9 @@ app.listen(port, async () => {
 });
 
 app.use(express.json())
+app.get('/', (req: Request, res: Response) => {
+  return res.status(200).json('Hello Backend');
+});
 app.use('/api/auth', authRoutes)
 app.use('/api/expenses', expenseRoutes)
 app.use('/api/incomes', incomeRoutes)
