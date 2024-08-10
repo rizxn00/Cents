@@ -47,10 +47,10 @@ const DonutChart: FC = () => {
     return (
         <>
             {isLoading ? <Loader /> :
-                <div style={{ height: 400 }} className="text-sm text-black dark:text-white">
+                <div style={{ height: 400, width: '100%' }} className="text-sm text-black dark:text-white">
                     <ResponsivePie
                         data={data}
-                        margin={{ top: 40, right: 40, bottom: 100, left: 80 }}
+                        margin={{ top: 100, right: 40, bottom: 100, left: 80 }}
                         innerRadius={0.5}
                         padAngle={0.7}
                         cornerRadius={3}
@@ -64,30 +64,7 @@ const DonutChart: FC = () => {
                         arcLabelsSkipAngle={10}
                         arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
                         enableArcLabels={false}
-                        legends={[
-                            {
-                                anchor: 'bottom-right',
-                                direction: 'column',
-                                justify: false,
-                                translateX: 50,
-                                translateY: 90,
-                                itemsSpacing: 10,
-                                itemWidth: 120,
-                                itemHeight: 20,
-                                itemTextColor: 'currentColor',
-                                itemDirection: 'left-to-right',
-                                symbolSize: 12,
-                                symbolShape: 'circle',
-                                effects: [
-                                    {
-                                        on: 'hover',
-                                        style: {
-                                            itemTextColor: '#000'
-                                        }
-                                    }
-                                ]
-                            }
-                        ]}
+                        fit={false}
                         tooltip={({ datum }: PieTooltipProps<any>) => (
                             <div className="bg-zinc-100 text-black dark:bg-zinc-900 dark:text-white text-xs p-2 rounded-lg">
                                 <strong>{datum.id}</strong>: {currency}{datum.value}

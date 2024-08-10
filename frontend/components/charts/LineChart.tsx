@@ -77,17 +77,17 @@ const LineChart: FC = () => {
                                 data: data.map((d, index) => ({ x: index + 1, y: d.lastMonthExpense }))
                             }
                         ]}
-                        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+                        margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
                         xScale={{ type: 'linear', min: 1, max: 'auto' }}
                         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: false }}
                         axisTop={null}
                         axisRight={null}
                         axisBottom={{
                             tickSize: 5,
-                            tickPadding: 5,
+                            tickPadding: 2,
                             tickRotation: 0,
                             legend: 'Expenses in range of 5 days',
-                            legendOffset: 36,
+                            legendOffset: 28,
                             legendPosition: 'middle',
                         }}
                         axisLeft={{
@@ -113,15 +113,15 @@ const LineChart: FC = () => {
                         areaOpacity={0.1}
                         legends={[
                             {
-                                anchor: 'bottom-right',
-                                direction: 'column',
+                                anchor: 'bottom',
+                                direction: 'row',
                                 justify: false,
-                                translateX: 100,
-                                translateY: 0,
+                                translateX: 10,
+                                translateY: 50,
                                 itemsSpacing: 0,
                                 itemDirection: 'left-to-right',
                                 itemWidth: 80,
-                                itemHeight: 20,
+                                itemHeight: 14,
                                 itemOpacity: 0.75,
                                 symbolSize: 12,
                                 symbolShape: 'circle',

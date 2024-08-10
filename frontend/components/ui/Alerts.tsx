@@ -38,7 +38,7 @@ const Alert: React.FC<AlertProps & { type: 'success' | 'error' }> = ({ message, 
         : 'text-red-800 border-red-300 bg-red-50 dark:bg-red-950 dark:text-red-400 dark:border-red-800';
 
     return (
-        <div className={`${isClosing ? 'animate-slideDown' : 'animate-slideUp'} absolute bottom-5 right-5 whitespace-nowrap flex justify-between items-center p-4 text-sm border rounded-lg z-50 ${alertStyles} ${className}`} role="alert">
+        <div className={`${isClosing ? 'animate-slideDown' : 'animate-slideUp'} overflow-hidden absolute bottom-5 right-5 whitespace-nowrap flex justify-between items-center p-4 text-sm border rounded-lg z-50 ${alertStyles} ${className}`} role="alert">
             <div className="flex items-center space-x-2">
                 {type === 'success' ? (
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">

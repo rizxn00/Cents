@@ -150,7 +150,7 @@ const Navigation: React.FC = () => {
     return (
         <div>
             <aside
-                className={`relative h-screen overflow-y-hidden bg-zinc-100 dark:bg-zinc-950 transition-all hidden flex-col  md:flex ${open ? 'w-48' : 'w-16'}`}>
+                className={`relative h-screen overflow-y-hidden bg-zinc-100 dark:bg-neutral-950 transition-all hidden flex-col  md:flex ${open ? 'w-48' : 'w-16'}`}>
                 <div className={`mt-5 m-2 flex-1`}>
                     <ul className='flex flex-col gap-2'>
                         <button className='flex justify-center' onClick={() => setOpen(!open)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" className='text-black dark:text-white' fill="none">

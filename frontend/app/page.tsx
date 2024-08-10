@@ -144,7 +144,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <main>
+      <main className="overflow-x-hidden">
         <div id="home" className="h-screen flex justify-center items-center p-10">
           <div className='space-y-5'>
             <div className='flex flex-col gap-2'>

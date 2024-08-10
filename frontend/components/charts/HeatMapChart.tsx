@@ -82,7 +82,7 @@ const ExpenseHeatMap: React.FC = () => {
         <div style={{ height: '400px' }}>
           <ResponsiveHeatMap
             data={formattedData}
-            margin={{ top: 60, right: 90, bottom: 60, left: 90 }}
+            margin={{ top: 60, right: 30, bottom: 60, left: 90 }}
             axisTop={{
               tickSize: 5,
               tickPadding: 5,
