@@ -320,7 +320,7 @@ function Income() {
                         <span className='hidden md:block'>Income</span>
                         </Button>
                 </div>
-                <p className='text-5xl font-semibold text-green-800'>{currency}{sum}</p>
+                <p className='text-5xl font-semibold text-green-800 overflow-hidden'>{currency}{sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Income</Label>
                     {isLoading ? <Loader/> : <div>

@@ -198,7 +198,7 @@ function Profile() {
                                 <Label className='text-xl'>{data?.email}</Label>
                             </div>
                         </div>
-                        <div className='col-span-2 gap-5 lg:gap-2 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 mt-5'>
+                        <div className='col-span-2 gap-5 lg:gap-2 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 mt-5 '>
                             <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                                 <div className='flex gap-2 items-center'>
                                     <Label>Total Income:</Label>

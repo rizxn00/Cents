@@ -317,7 +317,7 @@ function Expense() {
                         <span className='hidden md:block'>Expense</span>
                     </Button>
                 </div>
-                <p className='text-5xl font-semibold text-red-800'>{currency}{sum}</p>
+                <p className='text-5xl font-semibold text-red-800 overflow-hidden'>{currency}{sum}</p>
                 <div>
                     <Label className='text-xl font-medium'>Expenses</Label>
                     {isLoading ? <Loader /> : <div>
