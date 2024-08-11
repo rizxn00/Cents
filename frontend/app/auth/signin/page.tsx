@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Input from '@/components/ui/Input'
 import Label from '@/components/ui/Label'
@@ -65,6 +65,17 @@ export default function SignIn() {
             setIsSubmitting(false)
         }
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        const id = localStorage.getItem('id')
+
+        if(token && id) {
+            router.push('/dashboard')
+        }
+
+        return
+    })
 
     return (
         <div className='min-h-screen h-full flex justify-center items-center'>

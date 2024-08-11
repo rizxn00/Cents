@@ -187,40 +187,40 @@ function Profile() {
                         <div className='flex flex-col md:grid grid-cols-3 gap-5'>
                             <div className='flex gap-2 items-center'>
                                 <Label>Username:</Label>
-                                <Label className='text-xl'>{data?.username}</Label>
+                                <Label className='text-sm lg:text-xl'>{data?.username}</Label>
                             </div>
                             <div className='flex gap-2 items-center'>
                                 <Label>Full name:</Label>
-                                <Label className='text-xl'>{data?.name}</Label>
+                                <Label className='text-sm lg:text-xl'>{data?.name}</Label>
                             </div>
                             <div className='flex gap-2 items-center'>
                                 <Label>Email:</Label>
-                                <Label className='text-xl'>{data?.email}</Label>
+                                <Label className='text-sm lg:text-xl'>{data?.email}</Label>
                             </div>
                         </div>
                         <div className='col-span-2 gap-5 lg:gap-2 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 mt-5 '>
                             <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                                 <div className='flex gap-2 items-center'>
                                     <Label>Total Income:</Label>
-                                    <p className='text-green-600 text-xl'>{currency}{overview?.TotalIncome}</p>
+                                    <p className='text-green-600 text-sm lg:text-xl'>{currency}{overview?.TotalIncome}</p>
                                 </div>
                             </Card>
                             <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                                 <div className='flex gap-2 items-center'>
                                     <Label>Total Expenses:</Label>
-                                    <p className='text-red-600 text-xl'>{currency}{overview?.TotalExpense}</p>
+                                    <p className='text-red-600 text-sm lg:text-xl'>{currency}{overview?.TotalExpense}</p>
                                 </div>
                             </Card>
                             <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                                 <div className='flex gap-2 items-center'>
                                     <Label>Total Savings:</Label>
-                                    <p className='text-blue-600 text-xl'>{currency}{overview?.Balance}</p>
+                                    <p className='text-blue-600 text-sm lg:text-xl'>{currency}{overview?.Balance}</p>
                                 </div>
                             </Card>
                             <Card className='whitespace-nowrap border border-zinc-300 dark:border-zinc-900'>
                                 <div className='flex gap-2 items-center'>
                                     <Label>Total Transcations:</Label>
-                                    <p className='text-orange-600 text-xl'>{overview?.Transcation}</p>
+                                    <p className='text-orange-600 text-sm lg:text-xl'>{overview?.Transcation}</p>
                                 </div>
                             </Card>
                         </div>

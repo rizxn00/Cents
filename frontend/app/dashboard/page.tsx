@@ -200,12 +200,10 @@ function Dashboard() {
                         <div className='mt-2'>
                             {dashboardData.allTransactions.map((e: any, index: number) => (
                                 <Card className='mb-5 flex flex-col gap-1' key={index}>
-                                    <div className='flex justify-between'>
-                                        <div className='flex gap-3 items-center'>
+                                        <div className='flex gap-3'>
                                             <Label className='font-medium text-lg'>{e.category}</Label>
-                                            <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px] h-fit flex items-center'>{e.date}</Label>
+                                            <Label className='rounded-full bg-orange-700 text-white px-2 py-[1px] text-[12px]'>{e.date}</Label>
                                         </div>
-                                    </div>
                                     <div className={`text-xl ${e.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>{currency}{e.amount}</div>
                                     <Label className='text-xs font-light'>{e.description}</Label>
                                 </Card>
@@ -218,6 +216,5 @@ function Dashboard() {
         </HomeLayout>
     )
 }
-
 
 export default withAuth(Dashboard)
