@@ -21,8 +21,6 @@
     <img src="https://github.com/devicons/devicon/blob/master/icons/supabase/supabase-original.svg" title="Supabase" alt="Supabase" width="20" height="20"/>
 - **Database**: Supabase (PostgreSQL)  
     <img src="https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original.svg" title="PostgreSQL" alt="PostgreSQL" width="20" height="20"/>
-- **Deployment**: Render  
-    <img src="https://github.com/user-attachments/assets/58b528b3-6c0b-47d0-8c69-3818dafa636c" title="Render" alt="Render" width="20" height="20"/>
 
 ## Getting Started
 
