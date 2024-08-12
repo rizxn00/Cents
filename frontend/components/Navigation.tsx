@@ -152,7 +152,7 @@ const Navigation: React.FC = () => {
             <aside
                 className={`relative h-screen overflow-y-hidden bg-zinc-100 dark:bg-neutral-900 transition-all hidden flex-col  md:flex ${open ? 'w-48' : 'w-16'}`}>
                 <div className={`mt-5 m-2 flex-1`}>
-                    <ul className='flex flex-col gap-2'>
+                    <ul className='flex flex-col gap-2 transition-all'>
                         <button className='flex justify-center' onClick={() => setOpen(!open)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" className='text-black dark:text-white' fill="none">
                             <path d="M4 8.5L20 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -186,7 +186,7 @@ const Navigation: React.FC = () => {
                             <path d="M4 15.5L20 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </label>
-                    <div className="fixed top-0 left-0 z-50 w-64 min-h-screen  transition-transform duration-500 -translate-x-full bg-zinc-100 dark:bg-zinc-950 shadow-lg peer-checked:translate-x-0">
+                    <div className="fixed top-0 left-0 z-50 w-64 min-h-screen  transition-transform duration-500 -translate-x-full bg-zinc-100 dark:bg-neutral-900 shadow-lg peer-checked:translate-x-0">
                         <ClickOutside onClick={disableDrawer}>
                             <div className="px-2 py-4 flex flex-col justify-between h-full">
                                 <button onClick={disableDrawer} className="absolute top-4 right-4">
@@ -195,14 +195,14 @@ const Navigation: React.FC = () => {
                                     </svg>
                                 </button>
                                 <div className="mt-10 flex-1">
-                                    <ul className="flex flex-col gap-2">
+                                    <ul className="flex flex-col gap-2 transition-all">
                                         {pages.map((item: any) => (
                                             <NavItem
                                                 href={item.href}
                                                 open={true}
                                                 icon={item.image}
                                                 key={item.label}
-                                                className={pathname.includes(item.href) ? 'bg-gray-200 dark:bg-zinc-900' : ''}
+                                                className={pathname.includes(item.href) ? 'bg-gray-200 dark:bg-black' : ''}
                                             >
                                                 <Label className="cursor-pointer select-none">{item.label}</Label>
                                             </NavItem>

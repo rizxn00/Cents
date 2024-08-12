@@ -11,12 +11,14 @@ import Login_Illustration from '@/assets/svgs/login_illustrartion.svg'
 import background from '@/assets/svgs/background.svg'
 import { useRouter } from 'next/navigation'
 import { ErrorAlert } from '@/components/ui/Alerts'
+import { Loader } from '@/components/ui/Loader'
 
 export default function SignIn() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string>('')
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const router = useRouter()
 
@@ -74,11 +76,13 @@ export default function SignIn() {
             router.push('/dashboard')
         }
 
-        return
-    })
+        setIsLoading(false)
+    }, [router])
 
     return (
         <div className='min-h-screen h-full flex justify-center items-center'>
+            {isLoading ? <Loader/> :
+            <>
             <Image src={background} alt='background' className='absolute w-screen min-h-screen h-full' />
             <div className='flex flex-col bg-zinc-100 dark:bg-zinc-950 z-10 items-center pt-16 pb-10 gap-5 transition-all shadow-[0px_0.5px_8px_-3px_rgba(56,50,42,0.31)] rounded-xl w-full max-w-[90%] md:max-w-lg lg:max-w-xl'>
                 <div className='flex justify-center'>
@@ -109,6 +113,8 @@ export default function SignIn() {
                     </div>
                 </form>
             </div>
+            </>
+            }
             {error && error.length > 0 &&
                 <ErrorAlert message={error} onClose={() => setError('')} />}
         </div>

@@ -100,7 +100,7 @@ export default function Home() {
                                     </svg>
                                 </button>
                                 <div className="mt-10 flex-1">
-                                    <ul className="flex flex-col space-y-5">
+                                    <ul className="flex flex-col space-y-5 transition-all">
                                       <a href="#home" className="w-full flex justify-center p-2 rounded-lg" onClick={disableDrawer}>
                                         <Label className='text-sm cursor-pointer'>Home</Label>
                                       </a>
