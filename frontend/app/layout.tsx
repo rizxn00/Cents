@@ -7,7 +7,7 @@ const unbounded = Unbounded({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Cents",
-  description: "The ultimate expense tracker",
+  description: "The expense tracker",
 };
 
 export default function RootLayout({
